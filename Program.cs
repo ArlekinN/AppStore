@@ -1,6 +1,8 @@
 using AppStore.DAL;
 using Microsoft.Extensions.Configuration;
 
+using AppStore.WinForms;
+using System.Diagnostics;
 namespace AppStore
 {
     internal static class Program
@@ -12,13 +14,14 @@ namespace AppStore
         static void Main()
         {
             IConfiguration configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .Build();
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+               .Build();
             InitializationDAL.Initialization(configuration);
 
-            //ApplicationConfiguration.Initialize();
-            //Application.Run(new Form1());
+            ApplicationConfiguration.Initialize();
+
+            Application.Run(new MainForm());
         }
     }
 }

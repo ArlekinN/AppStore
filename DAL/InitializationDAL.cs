@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppStore.DAL.Database;
+using AppStore.DAL.Files;
+using System.Diagnostics;
 
 namespace AppStore.DAL
 {
@@ -19,7 +21,7 @@ namespace AppStore.DAL
             }
             else if (dalType == "File")
             {
-                
+                FileDAL.InitializationFile();
             }
         }
 
