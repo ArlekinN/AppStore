@@ -10,17 +10,17 @@ using System.Windows.Forms;
 
 namespace AppStore.WinForms
 {
-    public partial class BuyConsignmentForm : Form
+    public partial class BuyConsigmentForm : Form
     {
-        private MainForm mainForm;
-        public BuyConsignmentForm(MainForm mainForm)
+        private MainForm _mainForm;
+        public BuyConsigmentForm(MainForm mainForm)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
+            _mainForm = mainForm;
         }
         private void Back_Click(object sender, EventArgs e)
         {
-            mainForm.Show();
+            _mainForm.Show();
             this.Close();
         }
     }

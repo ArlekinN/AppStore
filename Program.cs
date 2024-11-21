@@ -1,8 +1,8 @@
-using AppStore.DAL;
 using Microsoft.Extensions.Configuration;
 
 using AppStore.WinForms;
 using System.Diagnostics;
+using AppStore.DAL.Initialization;
 namespace AppStore
 {
     internal static class Program

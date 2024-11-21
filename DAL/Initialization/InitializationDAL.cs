@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AppStore.DAL.Database;
-using AppStore.DAL.Files;
 using System.Diagnostics;
+using AppStore.DAL.Initialization.Files;
+using AppStore.DAL.Initialization.Database;
+using AppStore.DAL.Configuration;
 
-namespace AppStore.DAL
+namespace AppStore.DAL.Initialization
 {
     internal class InitializationDAL
     {
@@ -18,10 +19,12 @@ namespace AppStore.DAL
             if (dalType == "Database")
             {
                 DatabaseDAL.InitializationDatabase();
+                Config.GetInstans(dalType);
             }
             else if (dalType == "File")
             {
                 FileDAL.InitializationFile();
+                Config.GetInstans(dalType);
             }
         }
 

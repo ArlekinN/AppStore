@@ -12,15 +12,15 @@ namespace AppStore.WinForms
 {
     public partial class SearchStoreCheapestConsigmentForm : Form
     {
-        private MainForm mainForm;
+        private MainForm _mainForm;
         public SearchStoreCheapestConsigmentForm(MainForm mainForm)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
+            _mainForm = mainForm;
         }
         private void Back_Click(object sender, EventArgs e)
         {
-            mainForm.Show();
+            _mainForm.Show();
             this.Close();
         }
     }

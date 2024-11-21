@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppStore.DAL.Database
+namespace AppStore.DAL.Initialization.Database
 {
     internal static class DatabaseDAL
     {

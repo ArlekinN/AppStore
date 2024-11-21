@@ -1,6 +1,6 @@
 ﻿namespace AppStore.WinForms
 {
-    partial class BuyConsignmentForm
+    partial class BuyConsigmentForm
     {
         /// <summary>
         /// Required designer variable.

@@ -74,7 +74,7 @@ namespace AppStore.WinForms
 
         private void BuyConsignment_Click(object sender, EventArgs e)
         {
-            BuyConsignmentForm buyConsignmentForm = new BuyConsignmentForm(this);
+            BuyConsigmentForm buyConsignmentForm = new BuyConsigmentForm(this);
 
             buyConsignmentForm.Show();
 

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AppStore.Models.Files;
 
-namespace AppStore.DAL.Files
+namespace AppStore.DAL.Initialization.Files
 {
     internal static class FileDAL
     {

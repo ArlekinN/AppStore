@@ -12,15 +12,15 @@ namespace AppStore.WinForms
 {
     public partial class CreateProductForm : Form
     {
-        private MainForm mainForm;
-        public CreateProductForm(MainForm _mainForm)
+        private MainForm _mainForm;
+        public CreateProductForm(MainForm mainForm)
         {
             InitializeComponent();
-            mainForm = _mainForm;
+            _mainForm = mainForm;
         }
         private void Back_Click(object sender, EventArgs e)
         {
-            mainForm.Show();
+            _mainForm.Show();
             this.Close();
         }
     }

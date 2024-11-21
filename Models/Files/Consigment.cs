@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace AppStore.Models.Files
 {
-    internal class Product
+    internal class Consigment
     {
         public string Name { get; set; }
-        public int IdStore { get; set; }
         public int Price { get; set; }
         public int Amount { get; set; }
-        public Product(string name, int idStore, int price, int amount)
+        public Consigment(string name, int price, int amount)
         {
             Name = name;
-            IdStore = idStore;
             Price = price;
             Amount = amount;
         }
-
     }
 }
