@@ -7,7 +7,7 @@ using AppStore.Models.Files;
 
 namespace AppStore.BLL.Strategies
 {
-    internal class DataDisplayFiles<Consigment, Product>
+    internal class DataDisplayFiles: IDataDisplay<Consigment, Product>
     {
         // создать магазин
         public bool CreateStore(string name, string address)
