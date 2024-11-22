@@ -75,7 +75,7 @@
             labelResultCreating.Size = new Size(84, 25);
             labelResultCreating.TabIndex = 6;
             labelResultCreating.Text = "Успешно";
-            labelResultCreating.Hide();
+            labelResultCreating.Visible = false;
             // 
             // CreateProductForm
             // 

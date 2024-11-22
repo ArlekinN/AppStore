@@ -1,5 +1,6 @@
 ﻿using AppStore.BLL.Strategies;
 using AppStore.DAL.Configuration;
+using AppStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace AppStore.BLL
         public bool CreateStore(string name, string address)
         {
             return DataDisplay.CreateStore(name, address);
+        }
+        public List<string> AllStores()
+        {
+            return DataDisplay.ShowAllStores();
         }
     }
 }

@@ -16,6 +16,16 @@ namespace AppStore.BLL.Strategies
             List<ShowProduct> allProducts = new List<ShowProduct>();
             return allProducts;
         }
+        // все магазины
+        public override List<string> ShowAllStores()
+        {
+            return new List<string>();
+        }
+        // список продуктов
+        public override List<string> ShowUniqProducts()
+        {
+            return new List<string>();
+        }
         // создать магазин
         public override bool CreateStore(string name, string address)
         {
@@ -27,12 +37,12 @@ namespace AppStore.BLL.Strategies
             return true;
         }
         // завести партию товаров в маг{азин
-        public override bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments)
+        public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
             return true;
         }
         // обновить цену партии товаров в магазине
-        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<dynamic> consigments)
+        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
         {
             return true;
         }
@@ -48,12 +58,12 @@ namespace AppStore.BLL.Strategies
             return products;
         }
         //  Купить партию товаров 
-        public override int BuyConsignmentInStore(string nameStore, List<dynamic> consigment)
+        public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
             return 0;
         }
         // найти магазин, в которым паратия товаров самая дешевая 
-        public override string SearchStoreCheapestConsigment(List<dynamic> consigment)
+        public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
         {
             return "";
         }

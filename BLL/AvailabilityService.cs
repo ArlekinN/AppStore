@@ -27,11 +27,11 @@ namespace AppStore.BLL
         {
             return DataDisplay.ShowAllProducts();
         }
-        public bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments)
+        public bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
             return DataDisplay.DeliverGoodsToTheStore(nameStore, consigments);
         }
-        public bool UpdatePriceOfGoodsInStore(string nameStore, List<dynamic> consigments)
+        public bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
         {
             return DataDisplay.UpdatePriceOfGoodsInStore(nameStore, consigments);
         }
@@ -39,7 +39,7 @@ namespace AppStore.BLL
         {
             return DataDisplay.SearchProductOnTheSum(nameStore, sum);
         }
-        public int BuyConsignmentInStore(string nameStore, List<dynamic> consigment)
+        public int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
             return DataDisplay.BuyConsignmentInStore(nameStore, consigment);
         }
@@ -47,7 +47,7 @@ namespace AppStore.BLL
         {
             return DataDisplay.SearchStoreCheapestProduct(nameProduct);
         }
-        public string SearchStoreCheapestConsigment(List<dynamic> consigment)
+        public string SearchStoreCheapestConsigment(List<Consigment> consigment)
         {
             return DataDisplay.SearchStoreCheapestConsigment(consigment);
         }

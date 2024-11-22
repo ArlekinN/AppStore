@@ -21,7 +21,6 @@ namespace AppStore.WinForms
         }
         private void Back_Click(object sender, EventArgs e)
         {
-            labelResultCreating.Hide();
             _mainForm.Show();
             this.Close();
         }
@@ -33,7 +32,7 @@ namespace AppStore.WinForms
             {
                 ProductService productService = new ProductService();
                 bool isCreating = productService.CreateProduct(product);
-                if(isCreating) labelResultCreating.Show();
+                if(isCreating) labelResultCreating.Visible=true;
             }
         }
     }

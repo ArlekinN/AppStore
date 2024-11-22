@@ -20,6 +20,17 @@ namespace AppStore.BLL.Strategies
         {
             return _repositoryAvailability.GetAllProducts().Result;
         }
+        // все магазины 
+        public override List<string> ShowAllStores()
+        {
+            return _repositoryStore.ShowAllStores().Result;
+        }
+
+        // список продуктов
+        public override List<string> ShowUniqProducts()
+        {
+            return _repositoryProduct.ShowUniqProducts().Result;
+        }
 
         // создать магазин
         public override bool CreateStore(string name, string address)
@@ -31,13 +42,14 @@ namespace AppStore.BLL.Strategies
         {
             return _repositoryProduct.CreateProduct(name).Result;
         }
-        // завести партию товаров в маг{азин
-        public override bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments)
+        // завести партию товаров в магазин
+        public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
-            return true;
+            int idStore = _repositoryStore.GetStoreById(nameStore).Result;
+            return _repositoryAvailability.DeliverGoodsToTheStore(idStore, consigments).Result;
         }
         // обновить цену партии товаров в магазине
-        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<dynamic> consigments)
+        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
         {
             return true;
         }
@@ -53,12 +65,12 @@ namespace AppStore.BLL.Strategies
             return products;
         }
         //  Купить партию товаров 
-        public override int BuyConsignmentInStore(string nameStore, List<dynamic> consigment)
+        public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
             return 0;
         }
         // найти магазин, в которым паратия товаров самая дешевая 
-        public override string SearchStoreCheapestConsigment(List<dynamic> consigment)
+        public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
         {
             return "";
         }

@@ -22,7 +22,6 @@ namespace AppStore.WinForms
         }
         private void Back_Click(object sender, EventArgs e)
         {
-            labelResultCreating.Hide();
             _mainForm.Show();
             this.Close();
         }
@@ -35,7 +34,7 @@ namespace AppStore.WinForms
             {
                 StoreService storeService = new StoreService();
                 bool isCreatinhStore = storeService.CreateStore(store, address);
-                if (isCreatinhStore) labelResultCreating.Show();
+                if (isCreatinhStore) labelResultCreating.Visible=true;
             }
            
         }

@@ -1,5 +1,4 @@
 ﻿using AppStore.Models;
-using AppStore.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,9 @@ namespace AppStore.DAL.Interfaces
     internal abstract class IRepositoryAvailability
     {
         public abstract Task<List<ShowProduct>> GetAllProducts();
-        
+
+        public Task<bool> DeliverGoodsToTheStore() { return Task.FromResult(true); }
+
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AppStore.DAL.Interfaces;
 using AppStore.Models;
-using AppStore.Models.Database;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
@@ -13,6 +12,8 @@ namespace AppStore.DAL.Repositories.Database
 {
     internal class RepositoryAvailability: IRepositoryAvailability
     {
+        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
+        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
         private static RepositoryAvailability Instance { get; set; }
 
         private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
@@ -52,6 +53,29 @@ namespace AppStore.DAL.Repositories.Database
             }
             
             return products;
+        }
+
+        public async Task<bool> DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
+        {
+            var products = new List<ShowProduct>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            int idProduct;
+            foreach (Consigment consigment in consigments)
+            {
+
+                idProduct = await _repositoryProduct.GetProductById(consigment.Product);
+                using var command = new SqliteCommand(@"
+                INSERT INTO Availability(idStore, idProduct, Price, Amount)
+                VALUES(@idStore, @idProduct, @Price, @Amount)", connection);
+                command.Parameters.AddWithValue("@idStore", idStore);
+                command.Parameters.AddWithValue("@idProduct", idProduct);
+                command.Parameters.AddWithValue("@Price", consigment.Price);
+                command.Parameters.AddWithValue("@Amount", consigment.Amount);
+                await command.ExecuteNonQueryAsync();
+            }
+            return true;
         }
     }
 }

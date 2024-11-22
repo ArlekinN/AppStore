@@ -26,5 +26,9 @@ namespace AppStore.BLL
         {
             return DataDisplay.CreateProduct(name);
         }
+        public List<string> ShowUniqProducts()
+        {
+            return DataDisplay.ShowUniqProducts();
+        }
     }
 }
