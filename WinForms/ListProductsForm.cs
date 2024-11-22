@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppStore.DAL.Repositories.Database;
+using AppStore.BLL;
 
 namespace AppStore.WinForms
 {
@@ -29,6 +30,13 @@ namespace AppStore.WinForms
             _mainForm.Show();
             this.Close();
         }
-        
+        private void LoadProductsIntoGrid()
+        {
+            var products = new AvailabilityService();
+            // Привязка списка к DataGridView
+            dataGridViewListProduct.DataSource = products.ShowAllProducts();
+            dataGridViewListProduct.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AppStore.BLL.Strategies;
+using AppStore.DAL.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,23 @@ using System.Threading.Tasks;
 
 namespace AppStore.BLL
 {
-    internal class StoreService<Consigment, Product>
+    internal class StoreService
     {
-        //private IDataDisplay<Consigment, Product> DataDisplay { get; set; }
-        //public StoreService()
-        //{
-        //    DataDisplay = FactoryDataDisplay<Consigment, Product>.CreateDataDisplay();
-        //}
-        //public bool CreateStore(string name, string address)
-        //{
-        //    return DataDisplay.CreateStore(name, address);
-        //}
+        private IDataDisplay DataDisplay { get; set; }
+        public StoreService()
+        {
+            if (Config.TypeDal == "Database")
+            {
+                DataDisplay = new DataDisplayDatabase();
+            }
+            else
+            {
+                DataDisplay = new DataDisplayFiles();
+            }
+        }
+        public bool CreateStore(string name, string address)
+        {
+            return DataDisplay.CreateStore(name, address);
+        }
     }
 }

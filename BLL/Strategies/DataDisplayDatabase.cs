@@ -13,6 +13,7 @@ namespace AppStore.BLL.Strategies
     internal class DataDisplayDatabase: IDataDisplay
     {
         private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
+        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
         // все продукты 
         public override List<ShowProduct> ShowAllProducts()
         {
@@ -22,7 +23,7 @@ namespace AppStore.BLL.Strategies
         // создать магазин
         public override bool CreateStore(string name, string address)
         {
-            return true;
+            return _repositoryStore.CreateStore(name, address);
         }
         // создать продукт
         public override bool CreateProduct(string name)

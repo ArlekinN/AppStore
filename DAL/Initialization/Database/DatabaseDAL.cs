@@ -23,7 +23,7 @@ namespace AppStore.DAL.Initialization.Database
         {
             Batteries.Init();
             using var connection = new SqliteConnection($"Data Source={dbPath}");
-            connection.Open();
+            connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"CREATE TABLE IF NOT EXISTS  PRODUCT( 
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
@@ -41,14 +41,14 @@ namespace AppStore.DAL.Initialization.Database
             Amount INTEGER NOT NULL,
             FOREIGN KEY (IdStore) REFERENCES Store(Id) ON DELETE CASCADE,
             FOREIGN KEY (IdProduct) REFERENCES Product(Id) ON DELETE CASCADE)";
-            command.ExecuteNonQuery();
+            command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
 
         private static void Seed()
         {
             Batteries.Init();
             using var connection = new SqliteConnection($"Data Source={dbPath}");
-            connection.Open();
+            connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"
             INSERT INTO PRODUCT(Id, Name)
@@ -64,7 +64,7 @@ namespace AppStore.DAL.Initialization.Database
                 (2, 'Goh', 'Rosa 6'),
                 (3, 'FiveOne', 'Red 18');
         ";
-            command.ExecuteNonQuery();
+            command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
             INSERT INTO AVAILABILITY(IdStore, IdProduct, Price, Amount)
@@ -81,7 +81,7 @@ namespace AppStore.DAL.Initialization.Database
                 (3, 1, 90, 50 ),
                 (3, 4, 9, 300 ),
                 (3, 3, 135, 70 )";
-            command.ExecuteNonQuery();
+            command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }
 

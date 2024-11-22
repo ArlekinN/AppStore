@@ -60,14 +60,6 @@ namespace AppStore.WinForms
             ResumeLayout(false);
         }
 
-        private void LoadProductsIntoGrid()
-        {
-            var products = new AvailabilityService();
-            // Привязка списка к DataGridView
-            dataGridViewListProduct.DataSource = products.ShowAllProducts();
-            dataGridViewListProduct.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
         private Button buttonBack;
         private DataGridView dataGridViewListProduct;
     }
