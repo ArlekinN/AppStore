@@ -9,6 +9,6 @@ namespace AppStore.DAL.Interfaces
 {
     internal abstract class IRepositoryStore
     {
-        public abstract bool CreateStore(string nameStore, string address);
+        public abstract Task<bool> CreateStore(string nameStore, string address);
     }
 }

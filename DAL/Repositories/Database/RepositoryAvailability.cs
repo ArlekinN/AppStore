@@ -25,17 +25,18 @@ namespace AppStore.DAL.Repositories.Database
             }
             return Instance;
         }
-        public override List<ShowProduct> GetAllProducts()
+        public override async Task<List<ShowProduct>> GetAllProducts()
         {
             var products = new List<ShowProduct>();
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select s.Name as Store, p.Name as Product, Price, Amount from AVAILABILITY as a
                 join STORE as s on s.Id=a.IdStore
                 join PRODUCT as p on p.Id=IdProduct";
-            using (var reader = command.ExecuteReader())
+
+            using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
                 {
@@ -49,7 +50,8 @@ namespace AppStore.DAL.Repositories.Database
                     products.Add(product);
                 }
             }
-                return products;
+            
+            return products;
         }
     }
 }

@@ -14,21 +14,22 @@ namespace AppStore.BLL.Strategies
     {
         private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
         private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
+        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
         // все продукты 
         public override List<ShowProduct> ShowAllProducts()
         {
-            return _repositoryAvailability.GetAllProducts();
+            return _repositoryAvailability.GetAllProducts().Result;
         }
 
         // создать магазин
         public override bool CreateStore(string name, string address)
         {
-            return _repositoryStore.CreateStore(name, address);
+            return _repositoryStore.CreateStore(name, address).Result;
         }
         // создать продукт
         public override bool CreateProduct(string name)
         {
-            return true;
+            return _repositoryProduct.CreateProduct(name).Result;
         }
         // завести партию товаров в маг{азин
         public override bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments)

@@ -23,6 +23,10 @@
         private void InitializeComponent()
         {
             buttonBack = new Button();
+            buttonCreateProduct = new Button();
+            labelNameProduct = new Label();
+            textBoxNameProduct = new TextBox();
+            labelResultCreating = new Label();
             SuspendLayout();
             // 
             // buttonBack
@@ -35,16 +39,62 @@
             buttonBack.UseVisualStyleBackColor = true;
             buttonBack.Click += Back_Click;
             // 
+            // buttonCreateProduct
+            // 
+            buttonCreateProduct.Location = new Point(31, 93);
+            buttonCreateProduct.Name = "buttonCreateProduct";
+            buttonCreateProduct.Size = new Size(152, 29);
+            buttonCreateProduct.TabIndex = 1;
+            buttonCreateProduct.Text = "Создать продукт";
+            buttonCreateProduct.UseVisualStyleBackColor = true;
+            buttonCreateProduct.Click += buttonCreateProduct_Click;
+            // 
+            // labelNameProduct
+            // 
+            labelNameProduct.AutoSize = true;
+            labelNameProduct.Location = new Point(31, 34);
+            labelNameProduct.Name = "labelNameProduct";
+            labelNameProduct.Size = new Size(144, 20);
+            labelNameProduct.TabIndex = 2;
+            labelNameProduct.Text = "Название продукта";
+            // 
+            // textBoxNameProduct
+            // 
+            textBoxNameProduct.Location = new Point(196, 31);
+            textBoxNameProduct.Name = "textBoxNameProduct";
+            textBoxNameProduct.Size = new Size(125, 27);
+            textBoxNameProduct.TabIndex = 4;
+            // 
+            // labelResultCreating
+            // 
+            labelResultCreating.AutoSize = true;
+            labelResultCreating.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelResultCreating.ForeColor = Color.Lime;
+            labelResultCreating.Location = new Point(232, 97);
+            labelResultCreating.Name = "labelResultCreating";
+            labelResultCreating.Size = new Size(84, 25);
+            labelResultCreating.TabIndex = 6;
+            labelResultCreating.Text = "Успешно";
+            labelResultCreating.Hide();
+            // 
             // CreateProductForm
             // 
-            ClientSize = new Size(547, 500);
+            ClientSize = new Size(600, 500);
+            Controls.Add(labelResultCreating);
+            Controls.Add(textBoxNameProduct);
+            Controls.Add(labelNameProduct);
+            Controls.Add(buttonCreateProduct);
             Controls.Add(buttonBack);
             Name = "CreateProductForm";
             Text = "Создание товара";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         private Button buttonBack;
-        
+        private Button buttonCreateProduct;
+        private Label labelNameProduct;
+        private TextBox textBoxNameProduct;
+        private Label labelResultCreating;
     }
 }

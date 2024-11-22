@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AppStore.DAL.Interfaces
+{
+    internal abstract class IRepositoryProduct
+    {
+        public abstract Task<bool> CreateProduct(string nameProduct);
+    }
+}

@@ -10,7 +10,7 @@ namespace AppStore.DAL.Interfaces
 {
     internal abstract class IRepositoryAvailability
     {
-        public abstract List<ShowProduct> GetAllProducts();
+        public abstract Task<List<ShowProduct>> GetAllProducts();
         
     }
 }

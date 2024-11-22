@@ -14,6 +14,7 @@ namespace AppStore.DAL.Repositories.Database
         private static RepositoryStore Instance { get; set; }
 
         private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
+        private static readonly object _dbLock = new();
         private RepositoryStore() { }
         public static RepositoryStore GetInstance()
         {
@@ -23,17 +24,18 @@ namespace AppStore.DAL.Repositories.Database
             }
             return Instance;
         }
-        public override bool CreateStore(string nameStore, string address)
+        public override async Task<bool> CreateStore(string nameStore, string address)
         {
-            Console.WriteLine("Repositoty");
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
-            connection.OpenAsync().GetAwaiter().GetResult();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @$"INSERT INTO STORE(Name, Address)
-            VALUES
-                ('{nameStore}', '{address}')";
-            command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@$"
+                INSERT INTO STORE(Name, Address)
+                VALUES
+                (@nameStore, @address)", connection);
+            command.Parameters.AddWithValue("@nameStore", nameStore);
+            command.Parameters.AddWithValue("@address", address);
+            await command.ExecuteNonQueryAsync();
             return true;
         }
     }
