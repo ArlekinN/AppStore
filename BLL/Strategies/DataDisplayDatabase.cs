@@ -45,7 +45,7 @@ namespace AppStore.BLL.Strategies
         // завести партию товаров в магазин
         public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
-            int idStore = _repositoryStore.GetStoreById(nameStore).Result;
+            int idStore = _repositoryStore.GetStoreByName(nameStore).Result;
             return _repositoryAvailability.DeliverGoodsToTheStore(idStore, consigments).Result;
         }
         // обновить цену партии товаров в магазине
@@ -54,9 +54,10 @@ namespace AppStore.BLL.Strategies
             return true;
         }
         // найти магазин магазин с самым дешевым товаром
-        public override string SearchStoreCheapestProduct(string nameProduct)
+        public override List<string> SearchStoreCheapestProduct(string nameProduct)
         {
-            return "";
+            int idProduct = _repositoryProduct.GetProductByName(nameProduct).Result;
+            return _repositoryAvailability.SearchStoreCheapestProduct(idProduct).Result;
         }
         // найти товары, которые можно купить на сумму sum
         public override List<dynamic> SearchProductOnTheSum(string nameStore, int sum)

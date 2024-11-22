@@ -39,7 +39,7 @@ namespace AppStore.DAL.Repositories.Database
             
         }
 
-        public override async Task<int> GetProductById(string product)
+        public override async Task<int> GetProductByName(string product)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);

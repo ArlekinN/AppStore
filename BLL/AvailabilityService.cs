@@ -43,7 +43,7 @@ namespace AppStore.BLL
         {
             return DataDisplay.BuyConsignmentInStore(nameStore, consigment);
         }
-        public string SearchStoreCheapestProduct(string nameProduct)
+        public List<string> SearchStoreCheapestProduct(string nameProduct)
         {
             return DataDisplay.SearchStoreCheapestProduct(nameProduct);
         }

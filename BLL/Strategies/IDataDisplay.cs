@@ -27,7 +27,7 @@ namespace AppStore.BLL.Strategies
         // обновить цену партии товаров в магазине
         public abstract bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments);
         // найти магазин магазин с самым дешевым товаром
-        public abstract string SearchStoreCheapestProduct(string nameProduct);
+        public abstract List<string> SearchStoreCheapestProduct(string nameProduct);
         // найти товары, которые можно купить на сумму sum
         public abstract List<dynamic> SearchProductOnTheSum(string nameStore, int sum);
         //  Купить партию товаров 

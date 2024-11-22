@@ -30,7 +30,6 @@
             labelPrice = new Label();
             labelAmount = new Label();
             buttonAddProduct = new Button();
-            textBoxProduct1 = new TextBox();
             textBoxPrice1 = new TextBox();
             textBoxAmount1 = new TextBox();
             buttonCreateConsigment = new Button();
@@ -112,13 +111,6 @@
             buttonAddProduct.UseVisualStyleBackColor = true;
             buttonAddProduct.Click += ButtonAddProduct_Click;
             // 
-            // textBoxProduct1
-            // 
-            textBoxProduct1.Location = new Point(328, 62);
-            textBoxProduct1.Name = "textBoxProduct1";
-            textBoxProduct1.Size = new Size(125, 27);
-            textBoxProduct1.TabIndex = 9;
-            // 
             // textBoxPrice1
             // 
             textBoxPrice1.Location = new Point(183, 153);
@@ -183,7 +175,6 @@
             Controls.Add(buttonCreateConsigment);
             Controls.Add(textBoxAmount1);
             Controls.Add(textBoxPrice1);
-            Controls.Add(textBoxProduct1);
             Controls.Add(buttonAddProduct);
             Controls.Add(labelAmount);
             Controls.Add(labelPrice);
@@ -206,7 +197,6 @@
         private Label labelPrice;
         private Label labelAmount;
         private Button buttonAddProduct;
-        private TextBox textBoxProduct1;
         private TextBox textBoxPrice1;
         private TextBox textBoxAmount1;
         private Button buttonCreateConsigment;

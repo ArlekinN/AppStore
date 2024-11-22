@@ -31,5 +31,10 @@ namespace AppStore.BLL
         {
             return DataDisplay.ShowAllStores();
         }
+
+        public List<string> SearchStoreCheapestProduct(string product)
+        {
+            return DataDisplay.SearchStoreCheapestProduct(product);
+        }
     }
 }

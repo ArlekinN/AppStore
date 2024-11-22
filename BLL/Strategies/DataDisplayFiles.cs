@@ -47,9 +47,9 @@ namespace AppStore.BLL.Strategies
             return true;
         }
         // найти магазин магазин с самым дешевым товаром
-        public override string SearchStoreCheapestProduct(string nameProduct)
+        public override List<string> SearchStoreCheapestProduct(string nameProduct)
         {
-            return "";
+            return new List<string>();
         }
         // найти товары, которые можно купить на сумму sum
         public override List<dynamic> SearchProductOnTheSum(string nameStore, int sum)

@@ -12,6 +12,7 @@ namespace AppStore.DAL.Interfaces
         public abstract Task<List<ShowProduct>> GetAllProducts();
 
         public Task<bool> DeliverGoodsToTheStore() { return Task.FromResult(true); }
+        public abstract Task<List<string>> SearchStoreCheapestProduct(int idProduct);
 
 
     }

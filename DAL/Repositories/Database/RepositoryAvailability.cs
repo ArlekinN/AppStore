@@ -1,5 +1,7 @@
 ﻿using AppStore.DAL.Interfaces;
 using AppStore.Models;
+using AppStore.Models.Database;
+using AppStore.Models.Files;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
@@ -65,7 +67,7 @@ namespace AppStore.DAL.Repositories.Database
             foreach (Consigment consigment in consigments)
             {
 
-                idProduct = await _repositoryProduct.GetProductById(consigment.Product);
+                idProduct = await _repositoryProduct.GetProductByName(consigment.Product);
                 using var command = new SqliteCommand(@"
                 INSERT INTO Availability(idStore, idProduct, Price, Amount)
                 VALUES(@idStore, @idProduct, @Price, @Amount)", connection);
@@ -76,6 +78,27 @@ namespace AppStore.DAL.Repositories.Database
                 await command.ExecuteNonQueryAsync();
             }
             return true;
+        }
+        public override async Task<List<string>> SearchStoreCheapestProduct(int idProduct)
+        {
+            Batteries.Init();
+            var result = new List<string>();
+            int idStore; 
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand( @"select IdStore, min(price) as price from AVAILABILITY WHERE
+                idProduct = @idProduct", connection);
+            command.Parameters.AddWithValue("@idProduct", idProduct);
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                if (await reader.ReadAsync())
+                {
+                    idStore = Convert.ToInt32(reader["idStore"]);
+                    result.Add(_repositoryStore.GetStoreById(idStore).Result);
+                    result.Add(reader["price"].ToString());
+                }
+            }
+            return result;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace AppStore.DAL.Repositories.Database
             return true;
         }
 
-        public override async Task<int> GetStoreById(string store)
+        public override async Task<int> GetStoreByName(string store)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
@@ -76,5 +76,25 @@ namespace AppStore.DAL.Repositories.Database
 
             return stores;
         }
+
+        public override async Task<string> GetStoreById(int idStore)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("select Name from Store where Id=@idStore", connection);
+            command.Parameters.AddWithValue("@idStore", idStore);
+            string store = "";
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                if (await reader.ReadAsync())
+                {
+                    store = reader["Name"].ToString();
+                }
+            }
+            return store;
+        }
+
+
     }
 }
