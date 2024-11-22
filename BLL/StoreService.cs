@@ -9,14 +9,14 @@ namespace AppStore.BLL
 {
     internal class StoreService<Consigment, Product>
     {
-        private IDataDisplay<Consigment, Product> DataDisplay { get; set; }
-        public StoreService()
-        {
-            DataDisplay = FactoryDataDisplay<Consigment, Product>.CreateDataDisplay();
-        }
-        public bool CreateStore(string name, string address)
-        {
-            return DataDisplay.CreateStore(name, address);
-        }
+        //private IDataDisplay<Consigment, Product> DataDisplay { get; set; }
+        //public StoreService()
+        //{
+        //    DataDisplay = FactoryDataDisplay<Consigment, Product>.CreateDataDisplay();
+        //}
+        //public bool CreateStore(string name, string address)
+        //{
+        //    return DataDisplay.CreateStore(name, address);
+        //}
     }
 }

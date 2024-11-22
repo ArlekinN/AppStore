@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppStore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +7,26 @@ using System.Threading.Tasks;
 
 namespace AppStore.BLL.Strategies
 {
-    internal interface IDataDisplay<C, P>
+    internal abstract class  IDataDisplay
     {
+        // все продукты
+        public abstract List<ShowProduct> ShowAllProducts();
+
         // создать магазин
-        bool CreateStore(string name, string address );
+        public abstract bool CreateStore(string name, string address);
         // создать продукт
-        bool CreateProduct(string name);
+        public abstract bool CreateProduct(string name);
         // завести партию товаров в магазин
-        bool DeliverGoodsToTheStore(string nameStore, List<C> consigments);
+        public abstract bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments);
         // обновить цену партии товаров в магазине
-        bool UpdatePriceOfGoodsInStore(string nameStore, List<C> consigments);
+        public abstract bool UpdatePriceOfGoodsInStore(string nameStore, List<dynamic> consigments);
         // найти магазин магазин с самым дешевым товаром
-        string SearchStoreCheapestProduct(string nameProduct);
+        public abstract string SearchStoreCheapestProduct(string nameProduct);
         // найти товары, которые можно купить на сумму sum
-        List<P> SearchProductOnTheSum(string nameStore, int sum);
+        public abstract List<dynamic> SearchProductOnTheSum(string nameStore, int sum);
         //  Купить партию товаров 
-        int BuyConsignmentInStore(string nameStore, List<C> consigment);
+        public abstract int BuyConsignmentInStore(string nameStore, List<dynamic> consigment);
         // найти магазин, в которым паратия товаров самая дешевая 
-        string SearchStoreCheapestConsigment(List<C> consigment);
+        public abstract string SearchStoreCheapestConsigment(List<dynamic> consigment);
     }
 }

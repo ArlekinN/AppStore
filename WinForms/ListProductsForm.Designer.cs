@@ -1,4 +1,7 @@
-﻿namespace AppStore.WinForms
+﻿using AppStore.BLL;
+using System.Windows.Forms;
+
+namespace AppStore.WinForms
 {
     partial class ListProductsForm
     {
@@ -23,11 +26,13 @@
         private void InitializeComponent()
         {
             buttonBack = new Button();
+            dataGridViewListProduct = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewListProduct).BeginInit();
             SuspendLayout();
             // 
             // buttonBack
             // 
-            buttonBack.Location = new Point(422, 12);
+            buttonBack.Location = new Point(494, 12);
             buttonBack.Name = "buttonBack";
             buttonBack.Size = new Size(94, 29);
             buttonBack.TabIndex = 0;
@@ -35,15 +40,35 @@
             buttonBack.UseVisualStyleBackColor = true;
             buttonBack.Click += Back_Click;
             // 
+            // dataGridViewListProduct
+            // 
+            dataGridViewListProduct.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewListProduct.Location = new Point(12, 12);
+            dataGridViewListProduct.Name = "dataGridViewListProduct";
+            dataGridViewListProduct.RowHeadersWidth = 51;
+            dataGridViewListProduct.Size = new Size(453, 359);
+            dataGridViewListProduct.TabIndex = 1;
+            // 
             // ListProductsForm
             // 
-            ClientSize = new Size(547, 500);
+            ClientSize = new Size(600, 500);
+            Controls.Add(dataGridViewListProduct);
             Controls.Add(buttonBack);
             Name = "ListProductsForm";
             Text = "Список продуктов";
+            ((System.ComponentModel.ISupportInitialize)dataGridViewListProduct).EndInit();
             ResumeLayout(false);
         }
 
+        private void LoadProductsIntoGrid()
+        {
+            var products = new AvailabilityService();
+            // Привязка списка к DataGridView
+            dataGridViewListProduct.DataSource = products.ShowAllProducts();
+            dataGridViewListProduct.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
         private Button buttonBack;
+        private DataGridView dataGridViewListProduct;
     }
 }

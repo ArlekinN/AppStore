@@ -19,12 +19,12 @@ namespace AppStore.DAL.Initialization
             if (dalType == "Database")
             {
                 DatabaseDAL.InitializationDatabase();
-                Config.GetInstans(dalType);
+                Config.GetInstance(dalType);
             }
             else if (dalType == "File")
             {
                 FileDAL.InitializationFile();
-                Config.GetInstans(dalType);
+                Config.GetInstance(dalType);
             }
         }
 

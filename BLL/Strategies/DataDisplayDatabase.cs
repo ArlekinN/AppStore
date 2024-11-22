@@ -3,50 +3,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppStore.DAL.Repositories.Database;
+using AppStore.Models;
 using AppStore.Models.Database;
+
 
 namespace AppStore.BLL.Strategies
 {
-    internal class DataDisplayDatabase: IDataDisplay<Consigment, Product>
+    internal class DataDisplayDatabase: IDataDisplay
     {
+        private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
+        // все продукты 
+        public override List<ShowProduct> ShowAllProducts()
+        {
+            return _repositoryAvailability.GetAllProducts();
+        }
+
         // создать магазин
-        public bool CreateStore(string name, string address)
+        public override bool CreateStore(string name, string address)
         {
             return true;
         }
         // создать продукт
-        public bool CreateProduct(string name)
+        public override bool CreateProduct(string name)
         {
             return true;
         }
         // завести партию товаров в маг{азин
-        public bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
+        public override bool DeliverGoodsToTheStore(string nameStore, List<dynamic> consigments)
         {
             return true;
         }
         // обновить цену партии товаров в магазине
-        public bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
+        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<dynamic> consigments)
         {
             return true;
         }
         // найти магазин магазин с самым дешевым товаром
-        public string SearchStoreCheapestProduct(string nameProduct)
+        public override string SearchStoreCheapestProduct(string nameProduct)
         {
             return "";
         }
         // найти товары, которые можно купить на сумму sum
-        public List<Product> SearchProductOnTheSum(string nameStore, int sum)
+        public override List<dynamic> SearchProductOnTheSum(string nameStore, int sum)
         {
-            List<Product> products = new List<Product>();
+            List<dynamic> products = new List<dynamic>();
             return products;
         }
         //  Купить партию товаров 
-        public int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
+        public override int BuyConsignmentInStore(string nameStore, List<dynamic> consigment)
         {
             return 0;
         }
         // найти магазин, в которым паратия товаров самая дешевая 
-        public string SearchStoreCheapestConsigment(List<Consigment> consigment)
+        public override string SearchStoreCheapestConsigment(List<dynamic> consigment)
         {
             return "";
         }

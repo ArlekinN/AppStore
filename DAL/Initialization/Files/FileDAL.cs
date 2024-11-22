@@ -65,7 +65,7 @@ namespace AppStore.DAL.Initialization.Files
             foreach (var product in products)
             {
                 csvWriterProduct.WriteField(product.Name);
-                csvWriterProduct.WriteField(product.IdProduct);
+                csvWriterProduct.WriteField(product.IdStore);
                 csvWriterProduct.WriteField(product.Price);
                 csvWriterProduct.WriteField(product.Amount);
                 csvWriterProduct.NextRecord();
