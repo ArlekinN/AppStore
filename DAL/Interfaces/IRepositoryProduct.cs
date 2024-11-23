@@ -8,8 +8,8 @@ namespace AppStore.DAL.Interfaces
 {
     internal abstract class IRepositoryProduct
     {
-        public abstract Task<bool> CreateProduct(string nameProduct);
-        public abstract Task<int> GetProductByName(string product);
-        public abstract Task<List<string>> ShowUniqProducts();
+        public bool CreateProduct(string nameProduct) { return true; }
+        public int GetProductByName(string product) { return 0; }
+        public List<string> ShowUniqProducts() { return new List<string>(); }
     }
 }

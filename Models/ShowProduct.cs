@@ -12,5 +12,7 @@ namespace AppStore.Models
         public string Store { get; set; }
         public int Price { get; set; }
         public int Amount { get; set; }
+
+        public ShowProduct() { }
     }
 }

@@ -5,16 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using AppStore.Models.Files;
 using AppStore.Models;
+using AppStore.DAL.Repositories.Files;
 
 namespace AppStore.BLL.Strategies
 {
     internal class DataDisplayFiles: IDataDisplay
     {
+        private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
+        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
+        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
         // все продукты 
         public override List<ShowProduct> ShowAllProducts()
         {
-            List<ShowProduct> allProducts = new List<ShowProduct>();
-            return allProducts;
+            return _repositoryAvailability.GetAllProducts(); ;
         }
         // все магазины
         public override List<string> ShowAllStores()
@@ -29,23 +32,19 @@ namespace AppStore.BLL.Strategies
         // создать магазин
         public override bool CreateStore(string name, string address)
         {
-            return true;
+            return _repositoryStore.CreateStore(name, address);
         }
         // создать продукт
         public override bool CreateProduct(string name)
         {
-            return true;
+            return _repositoryProduct.CreateProduct(name);
         }
         // завести партию товаров в маг{азин
         public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
             return true;
         }
-        // обновить цену партии товаров в магазине
-        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
-        {
-            return true;
-        }
+
         // найти магазин магазин с самым дешевым товаром
         public override List<string> SearchStoreCheapestProduct(string nameProduct)
         {

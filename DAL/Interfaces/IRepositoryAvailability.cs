@@ -9,12 +9,12 @@ namespace AppStore.DAL.Interfaces
 {
     internal abstract class IRepositoryAvailability
     {
-        public abstract Task<List<ShowProduct>> GetAllProducts();
+        public List<ShowProduct> GetAllProducts() { return new List<ShowProduct>(); }
 
-        public Task<bool> DeliverGoodsToTheStore() { return Task.FromResult(true); }
-        public abstract Task<List<string>> SearchStoreCheapestProduct(int idProduct);
+        public bool DeliverGoodsToTheStore() { return true; }
+        public List<string> SearchStoreCheapestProduct(int idProduct) { return new List<string>(); }
 
-        public abstract Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum);
-        public abstract Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments);
+        public List<ProductAmount> SearchProductOnTheSum(int idStore, int sum) { return new List<ProductAmount>(); }
+        public int BuyConsignmentInStore(int idStore, List<Consigment> consigments) { return 0; }
     }
 }

@@ -10,9 +10,9 @@ namespace AppStore.DAL.Interfaces
 {
     internal abstract class IRepositoryStore
     {
-        public abstract Task<bool> CreateStore(string nameStore, string address);
-        public abstract Task<int> GetStoreByName(string store);
-        public abstract Task<List<string>> ShowAllStores();
-        public abstract Task<string> GetStoreById(int idStore);
+        public bool CreateStore(string nameStore, string address) { return true; }
+        public int GetStoreByName(string store) { return 0; }
+        public List<string> ShowAllStores() { return new List<string>(); }
+        public string GetStoreById(int idStore) { return ""; }
     }
 }

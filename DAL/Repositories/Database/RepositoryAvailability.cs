@@ -28,7 +28,7 @@ namespace AppStore.DAL.Repositories.Database
             }
             return Instance;
         }
-        public override async Task<List<ShowProduct>> GetAllProducts()
+        public new async Task<List<ShowProduct>> GetAllProducts()
         {
             var products = new List<ShowProduct>();
             Batteries.Init();
@@ -57,7 +57,7 @@ namespace AppStore.DAL.Repositories.Database
             return products;
         }
 
-        public async Task<bool> DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
+        public new async Task<bool> DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
         {
             var products = new List<ShowProduct>();
             Batteries.Init();
@@ -79,7 +79,7 @@ namespace AppStore.DAL.Repositories.Database
             }
             return true;
         }
-        public override async Task<List<string>> SearchStoreCheapestProduct(int idProduct)
+        public new async Task<List<string>> SearchStoreCheapestProduct(int idProduct)
         {
             Batteries.Init();
             var result = new List<string>();
@@ -108,7 +108,7 @@ namespace AppStore.DAL.Repositories.Database
             else return amount;
             
         }
-        public override async Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum)
+        public new async Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum)
         {
             var products = new List<ProductAmount>();
             Batteries.Init();
@@ -140,7 +140,7 @@ namespace AppStore.DAL.Repositories.Database
             }
             return products;
         }
-        public override async Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments)
+        public new async Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments)
         {
             int totalPrice = 0;
             bool isExistProduct = true;

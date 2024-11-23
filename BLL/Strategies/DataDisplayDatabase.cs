@@ -48,11 +48,7 @@ namespace AppStore.BLL.Strategies
             int idStore = _repositoryStore.GetStoreByName(nameStore).Result;
             return _repositoryAvailability.DeliverGoodsToTheStore(idStore, consigments).Result;
         }
-        // обновить цену партии товаров в магазине
-        public override bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
-        {
-            return true;
-        }
+
         // найти магазин магазин с самым дешевым товаром
         public override List<string> SearchStoreCheapestProduct(string nameProduct)
         {

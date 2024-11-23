@@ -31,10 +31,6 @@ namespace AppStore.BLL
         {
             return DataDisplay.DeliverGoodsToTheStore(nameStore, consigments);
         }
-        public bool UpdatePriceOfGoodsInStore(string nameStore, List<Consigment> consigments)
-        {
-            return DataDisplay.UpdatePriceOfGoodsInStore(nameStore, consigments);
-        }
         public List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
             return DataDisplay.SearchProductOnTheSum(nameStore, sum);

@@ -25,7 +25,7 @@ namespace AppStore.DAL.Repositories.Database
             }
             return Instance;
         }
-        public override async Task<bool> CreateStore(string nameStore, string address)
+        public new async Task<bool> CreateStore(string nameStore, string address)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
@@ -40,7 +40,7 @@ namespace AppStore.DAL.Repositories.Database
             return true;
         }
 
-        public override async Task<int> GetStoreByName(string store)
+        public new async Task<int> GetStoreByName(string store)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
@@ -58,7 +58,7 @@ namespace AppStore.DAL.Repositories.Database
             return idStore;
         }
 
-        public override async Task<List<string>> ShowAllStores()
+        public new async Task<List<string>> ShowAllStores()
         {
             var stores = new List<string>();
             Batteries.Init();
@@ -77,7 +77,7 @@ namespace AppStore.DAL.Repositories.Database
             return stores;
         }
 
-        public override async Task<string> GetStoreById(int idStore)
+        public new async Task<string> GetStoreById(int idStore)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
