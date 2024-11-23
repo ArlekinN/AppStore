@@ -44,8 +44,9 @@ namespace AppStore.DAL.Repositories.Files
                     Id = Convert.ToInt32(valuesLine[0]),
                     Name = valuesLine[1],
                     IdStore = Convert.ToInt32(valuesLine[2]),
-                    Amount = Convert.ToInt32(valuesLine[3]),
-                    Price = Convert.ToInt32(valuesLine[4]),
+                    Price = Convert.ToInt32(valuesLine[3]),
+                    Amount = Convert.ToInt32(valuesLine[4]),
+                    
                 };
                 products.Add(product);
 
@@ -94,10 +95,12 @@ namespace AppStore.DAL.Repositories.Files
             int firstValue = Convert.ToInt32(valuesLine[0]) + 1;
             return firstValue;
         }
-        public new List<string> SearchStoreCheapestProduct(int idProduct)
+        public new List<string> SearchStoreCheapestProduct(string nameProduct)
         {
-            
-            return new List<string>();
+            var products = GetAllProducts();
+            var productsFilterProduct = products.Where(product => product.Product.Equals(nameProduct)).ToList();
+            var cheapestProduct = productsFilterProduct.OrderBy(product => product.Price).FirstOrDefault();
+            return new List<string>() { cheapestProduct.Store, cheapestProduct.Price.ToString() };
         }
 
         public new List<ProductAmount> SearchProductOnTheSum(int idStore, int sum)
