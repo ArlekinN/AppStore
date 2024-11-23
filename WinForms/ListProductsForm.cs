@@ -33,7 +33,6 @@ namespace AppStore.WinForms
         private void LoadProductsIntoGrid()
         {
             var products = new AvailabilityService();
-            // Привязка списка к DataGridView
             dataGridViewListProduct.DataSource = products.ShowAllProducts();
             dataGridViewListProduct.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }

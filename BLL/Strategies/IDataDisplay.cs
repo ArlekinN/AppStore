@@ -29,7 +29,7 @@ namespace AppStore.BLL.Strategies
         // найти магазин магазин с самым дешевым товаром
         public abstract List<string> SearchStoreCheapestProduct(string nameProduct);
         // найти товары, которые можно купить на сумму sum
-        public abstract List<dynamic> SearchProductOnTheSum(string nameStore, int sum);
+        public abstract List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum);
         //  Купить партию товаров 
         public abstract int BuyConsignmentInStore(string nameStore, List<Consigment> consigment);
         // найти магазин, в которым паратия товаров самая дешевая 

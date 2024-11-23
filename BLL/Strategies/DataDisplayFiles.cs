@@ -52,9 +52,9 @@ namespace AppStore.BLL.Strategies
             return new List<string>();
         }
         // найти товары, которые можно купить на сумму sum
-        public override List<dynamic> SearchProductOnTheSum(string nameStore, int sum)
+        public override List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
-            List<dynamic> products = new List<dynamic>();
+            List<ProductAmount> products = new List<ProductAmount>();
             return products;
         }
         //  Купить партию товаров 

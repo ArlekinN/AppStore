@@ -100,5 +100,45 @@ namespace AppStore.DAL.Repositories.Database
             }
             return result;
         }
+
+        private int AmountProduct(int price, int amountCommon, int sum)
+        {
+            int amount = sum/price;
+            if (amount > amountCommon) return amountCommon;
+            else return amount;
+            
+        }
+        public override async Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum)
+        {
+            var products = new List<ProductAmount>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                    select p.Name as Product, Price, Amount from AVAILABILITY as a
+                    JOIN PRODUCT as p on p.Id=a.IdProduct
+                    where IdStore =  @idStore", connection);
+            command.Parameters.AddWithValue("@idStore", idStore);
+            int price, amountCommon, amount;
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    price = Convert.ToInt32(reader["Price"]);
+                    amountCommon = Convert.ToInt32(reader["Amount"]);
+                    amount = AmountProduct(price, amountCommon, sum);
+                    if(amount > 0)
+                    {
+                        var productAmount = new ProductAmount
+                        {
+                            Product = reader["Product"].ToString(),
+                            Amount = amount
+                        };
+                        products.Add(productAmount);
+                    }
+                }
+            }
+            return products;
+        }
     }
 }

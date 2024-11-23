@@ -60,10 +60,10 @@ namespace AppStore.BLL.Strategies
             return _repositoryAvailability.SearchStoreCheapestProduct(idProduct).Result;
         }
         // найти товары, которые можно купить на сумму sum
-        public override List<dynamic> SearchProductOnTheSum(string nameStore, int sum)
+        public override List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
-            List<dynamic> products = new List<dynamic>();
-            return products;
+            int idStore = _repositoryStore.GetStoreByName(nameStore).Result;
+            return _repositoryAvailability.SearchProductOnTheSum(idStore, sum).Result;
         }
         //  Купить партию товаров 
         public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)

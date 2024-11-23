@@ -14,6 +14,6 @@ namespace AppStore.DAL.Interfaces
         public Task<bool> DeliverGoodsToTheStore() { return Task.FromResult(true); }
         public abstract Task<List<string>> SearchStoreCheapestProduct(int idProduct);
 
-
+        public abstract Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum);
     }
 }

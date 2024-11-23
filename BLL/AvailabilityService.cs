@@ -35,7 +35,7 @@ namespace AppStore.BLL
         {
             return DataDisplay.UpdatePriceOfGoodsInStore(nameStore, consigments);
         }
-        public List<dynamic> SearchProductOnTheSum(string nameStore, int sum)
+        public List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
             return DataDisplay.SearchProductOnTheSum(nameStore, sum);
         }
