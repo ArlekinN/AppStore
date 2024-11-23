@@ -17,17 +17,17 @@ namespace AppStore.BLL.Strategies
         // все продукты 
         public override List<ShowProduct> ShowAllProducts()
         {
-            return _repositoryAvailability.GetAllProducts(); ;
+            return _repositoryAvailability.GetAllProducts(); 
         }
         // все магазины
         public override List<string> ShowAllStores()
         {
-            return new List<string>();
+            return _repositoryStore.ShowAllStores();
         }
         // список продуктов
         public override List<string> ShowUniqProducts()
         {
-            return new List<string>();
+            return _repositoryProduct.ShowUniqProducts();
         }
         // создать магазин
         public override bool CreateStore(string name, string address)
@@ -39,10 +39,11 @@ namespace AppStore.BLL.Strategies
         {
             return _repositoryProduct.CreateProduct(name);
         }
-        // завести партию товаров в маг{азин
+        // завести партию товаров в магазин
         public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
         {
-            return true;
+            int idStore = _repositoryStore.GetStoreByName(nameStore);
+            return _repositoryAvailability.DeliverGoodsToTheStore(idStore, consigments);
         }
 
         // найти магазин магазин с самым дешевым товаром

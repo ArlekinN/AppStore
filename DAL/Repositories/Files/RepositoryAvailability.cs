@@ -16,11 +16,8 @@ namespace AppStore.DAL.Repositories.Files
     internal class RepositoryAvailability : IRepositoryAvailability
     {
         private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
-        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
         private static string productsFile = Path.Combine(AppContext.BaseDirectory, "products.csv");
         private static RepositoryAvailability Instance { get; set; }
-
-        private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
         private RepositoryAvailability() 
         {
             FileInfo fileProduct = new FileInfo(productsFile);
@@ -34,7 +31,7 @@ namespace AppStore.DAL.Repositories.Files
             return Instance;
         }
 
-        private List<Product> GetListProducts()
+        public List<Product> GetListProducts()
         {
             string[] lines = File.ReadAllLines(productsFile);
             string[] valuesLine;
@@ -72,7 +69,30 @@ namespace AppStore.DAL.Repositories.Files
 
         public new bool DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
         {
+            int countId = GetLastId();
+            using var writerStore = new StreamWriter(productsFile, true);
+            using var csvWriterStore = new CsvWriter(writerStore, CultureInfo.CurrentCulture);
+            foreach (var consigment in consigments)
+            {
+                var product = new Product(countId, consigment.Product, idStore, consigment.Price, consigment.Amount);
+                csvWriterStore.WriteField(product.Id);
+                csvWriterStore.WriteField(product.Name);
+                csvWriterStore.WriteField(product.IdStore);
+                csvWriterStore.WriteField(product.Price);
+                csvWriterStore.WriteField(product.Amount);
+                csvWriterStore.NextRecord();
+                countId++;
+            }
             return true;
+            
+        }
+        public int GetLastId()
+        {
+            string[] lines = File.ReadAllLines(productsFile);
+            string lastLine = lines[lines.Length - 1];
+            string[] valuesLine = lastLine.Split(';');
+            int firstValue = Convert.ToInt32(valuesLine[0]) + 1;
+            return firstValue;
         }
         public new List<string> SearchStoreCheapestProduct(int idProduct)
         {

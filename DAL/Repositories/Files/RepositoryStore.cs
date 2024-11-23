@@ -44,7 +44,7 @@ namespace AppStore.DAL.Repositories.Files
             csvWriterStore.NextRecord();
             return true;
         }
-        public static int GetLastId()
+        public int GetLastId()
         {
             string[] lines = File.ReadAllLines(storesFile);
             string lastLine = lines[lines.Length - 1];
@@ -52,22 +52,21 @@ namespace AppStore.DAL.Repositories.Files
             int firstValue = Convert.ToInt32(valuesLine[0]) + 1;
             return firstValue;
         }
-        public int GetStoreByName(string store)
+        public int GetStoreByName(string storeName)
         {
-            return 0;
+            var stores = GetListStores();
+            int idStore = stores
+                .Where(store => store.Name.Equals(storeName))
+                .Select(store => store.Id)
+                .FirstOrDefault();
+            return idStore;
         }
 
         public new List<string> ShowAllStores()
         {
-            string[] lines = File.ReadAllLines(storesFile);
-            string[] valuesLine;
-            var stores = new List<string>();
-            foreach (var line in lines)
-            {
-                valuesLine = line.Split(';');
-                stores.Add(valuesLine[2]);
-            }
-            return stores;
+            var stores = GetListStores();
+            var namesStores = stores.Select(store => store.Name).ToList();
+            return namesStores;
         }
 
         public new async Task<string> GetStoreById(int idStore)

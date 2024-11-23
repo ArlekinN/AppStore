@@ -1,4 +1,5 @@
-﻿using AppStore.Models.Files;
+﻿using AppStore.DAL.Interfaces;
+using AppStore.Models.Files;
 using CsvHelper;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
@@ -12,15 +13,13 @@ using System.Threading.Tasks;
 
 namespace AppStore.DAL.Repositories.Files
 {
-    internal class RepositoryProduct
+    internal class RepositoryProduct : IRepositoryProduct
     {
         private static RepositoryProduct Instance { get; set; }
 
         private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
+        private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
         private static string productsFile = Path.Combine(AppContext.BaseDirectory, "products.csv");
-        private RepositoryProduct() {
-            FileInfo fileProduct = new FileInfo(productsFile);
-        }
         public static RepositoryProduct GetInstance()
         {
             if (Instance == null)
@@ -28,6 +27,11 @@ namespace AppStore.DAL.Repositories.Files
                 Instance = new RepositoryProduct();
             }
             return Instance;
+        }
+        
+        private RepositoryProduct() 
+        {
+            FileInfo fileProduct = new FileInfo(productsFile);
         }
         public new bool CreateProduct(string nameProduct)
         {
@@ -43,7 +47,7 @@ namespace AppStore.DAL.Repositories.Files
             return true;
 
         }
-        public static int GetLastId()
+        public int GetLastId()
         {
             string[] lines = File.ReadAllLines(productsFile);
             string lastLine = lines[lines.Length - 1];
@@ -71,23 +75,11 @@ namespace AppStore.DAL.Repositories.Files
             return idProduct;
         }
 
-        public new async Task<List<string>> ShowUniqProducts()
+        public new List<string> ShowUniqProducts()
         {
-            var products = new List<string>();
-            Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select Name from Product";
-            using (var reader = await command.ExecuteReaderAsync())
-            {
-                while (reader.Read())
-                {
-                    products.Add(reader["Name"].ToString());
-                }
-            }
-
-            return products;
+            var products = _repositoryAvailability.GetListProducts();
+            var uniqProduct = products.Select(product => product.Name).Distinct().ToList();
+            return uniqProduct;
         }
     }
 }
