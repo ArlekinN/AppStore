@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.LinkLabel;
@@ -69,22 +70,14 @@ namespace AppStore.DAL.Repositories.Files
             return namesStores;
         }
 
-        public new async Task<string> GetStoreById(int idStore)
+        public new string GetStoreById(int idStore)
         {
-            Batteries.Init();
-            using var connection = new SqliteConnection("_connectionString");
-            await connection.OpenAsync();
-            using var command = new SqliteCommand("select Name from Store where Id=@idStore", connection);
-            command.Parameters.AddWithValue("@idStore", idStore);
-            string store = "";
-            using (var reader = await command.ExecuteReaderAsync())
-            {
-                if (await reader.ReadAsync())
-                {
-                    store = reader["Name"].ToString();
-                }
-            }
-            return store;
+            var stores = GetListStores();
+            string storeName = stores
+                .Where(store => store.Id == idStore)
+                .Select(store => store.Name)
+                .FirstOrDefault();
+            return storeName;
         }
 
         public List<Store> GetListStores()

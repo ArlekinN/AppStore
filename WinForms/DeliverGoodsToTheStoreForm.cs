@@ -34,7 +34,6 @@ namespace AppStore.WinForms
         private void LoadDataStore()
         {
             comboBoxStores.Items.Clear();
-            Console.WriteLine("form");
             StoreService storeService = new StoreService();
             List<string> stores = storeService.AllStores();
             foreach (string store in stores)

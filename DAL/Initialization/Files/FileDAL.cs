@@ -29,24 +29,24 @@ namespace AppStore.DAL.Initialization.Files
         {
             var stores = new List<Store>
             {
-                new Store(1, "KateStore", "Millionnaya 30"),
-                new Store(2, "Goh", "Rosa 6"),
-                new Store(3, "FiveOne", "Red 18"),
+                new Store(1, "NewBody", "Millionnaya 30"),
+                new Store(2, "Donor.Net", "Rosa 6"),
+                new Store(3, "ThreeFingers", "Red 18"),
             };
             var products = new List<Product>
             {
-                new Product(1, "Milk", 1, 115, 30),
-                new Product(2, "Oil", 1, 110, 40),
-                new Product(3, "Jogurt", 1, 56, 112),
-                new Product(4, "Milk", 2, 120, 40),
-                new Product(5, "Bread", 2, 32, 210),
-                new Product(6, "Eggs", 2, 12, 400),
-                new Product(7, "Jogurt", 2, 70, 30),
-                new Product(8, "Jogurt", 3, 67, 80),
-                new Product(9, "Bread", 3, 30, 90),
-                new Product(10, "Milk", 3, 90, 50),
-                new Product(11, "Eggs", 3, 9, 300),
-                new Product(12, "Oil", 3, 135, 70)
+                new Product(1, "Brain", 1, 400, 4),
+                new Product(2, "Hand", 1, 250, 20),
+                new Product(3, "Stomach", 1, 380, 7),
+                new Product(4, "Brain", 2, 650, 8),
+                new Product(5, "Heart", 2, 800, 3),
+                new Product(6, "Finger", 2, 150, 25),
+                new Product(7, "Stomach", 2, 350, 18),
+                new Product(8, "Stomach", 3, 410, 12),
+                new Product(9, "Heart", 3, 910, 7),
+                new Product(10, "Brain", 3, 510, 9),
+                new Product(11, "Finger", 3, 170, 22),
+                new Product(12, "Hand", 3, 260, 11)
             };
             // запись магазинов
             using var writerStore = new StreamWriter(storesFile, true);

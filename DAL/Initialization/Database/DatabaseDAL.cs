@@ -54,34 +54,34 @@ namespace AppStore.DAL.Initialization.Database
             command.CommandText = @"
             INSERT INTO PRODUCT(Id, Name)
             VALUES
-                (1, 'Milk'),
-                (2, 'Bread'),
-                (3, 'Oil'),
-                (4, 'Eggs'),
-                (5, 'Jogurt');
+                (1, 'Brain'),
+                (2, 'Heart'),
+                (3, 'Hand'),
+                (4, 'Finger'),
+                (5, 'Stomach');
             INSERT INTO STORE(Id, Name, Address)
             VALUES
-                (1, 'KateStore', 'Millionnaya 30'),
-                (2, 'Goh', 'Rosa 6'),
-                (3, 'FiveOne', 'Red 18');
+                (1, 'NewBody', 'Millionnaya 30'),
+                (2, 'Donor.Net', 'Rosa 6'),
+                (3, 'ThreeFingers', 'Red 18');
         ";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
             INSERT INTO AVAILABILITY(Id, IdStore, IdProduct, Price, Amount)
             VALUES
-                (1, 1, 1, 115, 30 ),
-                (2, 1, 3, 110, 40 ),
-                (3, 1, 5, 56, 112 ),
-                (4, 2, 1, 120, 40 ),
-                (5, 2, 2, 32, 210 ),
-                (6, 2, 4, 12, 400 ),
-                (7, 2, 5, 70, 30 ),
-                (8, 3, 5, 67, 80 ),
-                (9, 3, 2, 30, 90 ),
-                (10, 3, 1, 90, 50 ),
-                (11, 3, 4, 9, 300 ),
-                (12, 3, 3, 135, 70 )";
+                (1, 1, 1, 400, 4 ),
+                (2, 1, 3, 250, 20 ),
+                (3, 1, 5, 380, 7 ),
+                (4, 2, 1, 650, 8 ),
+                (5, 2, 2, 800, 3 ),
+                (6, 2, 4, 150, 25 ),
+                (7, 2, 5, 350, 18 ),
+                (8, 3, 5, 410, 12 ),
+                (9, 3, 2, 910, 7 ),
+                (10, 3, 1, 510, 9 ),
+                (11, 3, 4, 170, 22 ),
+                (12, 3, 3, 260, 11 )";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }

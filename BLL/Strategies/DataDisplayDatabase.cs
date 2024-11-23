@@ -65,7 +65,7 @@ namespace AppStore.BLL.Strategies
         public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
             int idStore = _repositoryStore.GetStoreByName(nameStore).Result;
-            return _repositoryAvailability.BuyConsignmentInStore(idStore, consigment).Result;
+            return _repositoryAvailability.BuyConsignmentInStore(idStore, consigment, true).Result;
         }
         // найти магазин, в которым паратия товаров самая дешевая 
         public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
@@ -75,14 +75,15 @@ namespace AppStore.BLL.Strategies
             string storeResult = "";
             foreach (var store in stores)
             {
-                priceCurrentStore = BuyConsignmentInStore(store, consigment);
-                if (minPrice == -1 || priceCurrentStore < minPrice)
+                int idStore = _repositoryStore.GetStoreByName(store).Result;
+                priceCurrentStore = _repositoryAvailability.BuyConsignmentInStore(idStore, consigment, false).Result;
+                if ((minPrice == -1 && priceCurrentStore != 0) || (priceCurrentStore < minPrice && priceCurrentStore != 0))
                 {
                     minPrice = priceCurrentStore;
                     storeResult = store;
                 }
             }
-            if (minPrice == 0) return "";
+            if (minPrice <= 0) return "";
             return storeResult;
         }
     }

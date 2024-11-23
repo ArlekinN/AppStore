@@ -46,7 +46,7 @@ namespace AppStore.WinForms
             dataGridViewListProduct.Location = new Point(12, 12);
             dataGridViewListProduct.Name = "dataGridViewListProduct";
             dataGridViewListProduct.RowHeadersWidth = 51;
-            dataGridViewListProduct.Size = new Size(453, 359);
+            dataGridViewListProduct.Size = new Size(453, 470);
             dataGridViewListProduct.TabIndex = 1;
             // 
             // ListProductsForm

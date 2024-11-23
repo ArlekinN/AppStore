@@ -140,7 +140,7 @@ namespace AppStore.DAL.Repositories.Database
             }
             return products;
         }
-        public new async Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments)
+        public new async Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments, bool isChange)
         {
             int totalPrice = 0;
             bool isExistProduct = true;
@@ -169,7 +169,8 @@ namespace AppStore.DAL.Repositories.Database
                 }
             }
             // текущее количество товара данной поставки, которое надо найти
-            int currentAmountConsigment=0, newAmount, commonAmount=0;
+            int currentAmountConsigment = 0;
+            int newAmount, commonAmount=0; // сколько такого товара есть в магазине
             // проверка на то, что в магазине есть нужное количество товаров
             foreach (var consigment in consigments)
             {
@@ -196,40 +197,33 @@ namespace AppStore.DAL.Repositories.Database
                 foreach (var consigment in consigments)
                 {
                     currentAmountConsigment = consigment.Amount;
-                    // проверка на то, что нужно количество товаров есть в магазине
-                    if (commonAmount < currentAmountConsigment)
+
+                    foreach (var consigmentDB in consigmentsDB)
                     {
-                        isExistProduct = false;
-                    }
-                    else
-                    {
-                        foreach (var consigmentDB in consigmentsDB)
+                        // если необходимо количество товара найдено
+                        if (currentAmountConsigment == 0)
                         {
-                            // если необходимо количество товара найдено
-                            if (currentAmountConsigment == 0)
+                            break;
+                        }
+                        // в поставке найден нужный товар
+                        if (consigment.Product == consigmentDB.Product)
+                        {
+                            // если в данной поставке товара больше чем необходимо
+                            if (consigmentDB.Amount > currentAmountConsigment)
                             {
+                                totalPrice += currentAmountConsigment * consigmentDB.Price;
+                                newAmount = consigmentDB.Amount - currentAmountConsigment;
+                                // обновление данных о поставке
+                                if(isChange)UpdateConsigment(consigmentDB.Id, newAmount);
+                                currentAmountConsigment = 0;
                                 break;
                             }
-                            // в поставке найден нужный товар
-                            if (consigment.Product == consigmentDB.Product)
+                            else // если в поставке товара меньше
                             {
-                                // если в данной поставке товара больше чем необходимо
-                                if (consigmentDB.Amount > currentAmountConsigment)
-                                {
-                                    totalPrice += currentAmountConsigment * consigmentDB.Price;
-                                    newAmount = consigmentDB.Amount - currentAmountConsigment;
-                                    // обновление данных о поставке
-                                    UpdateConsigment(consigmentDB.Id, newAmount);
-                                    currentAmountConsigment = 0;
-                                    break;
-                                }
-                                else // если в поставке товара меньше
-                                {
-                                    totalPrice += consigmentDB.Amount * consigmentDB.Price;
-                                    currentAmountConsigment -= consigmentDB.Amount;
-                                    // удаление данных о поставке их БД
-                                    DeleteConsigment(consigmentDB.Id);
-                                }
+                                totalPrice += consigmentDB.Amount * consigmentDB.Price;
+                                currentAmountConsigment -= consigmentDB.Amount;
+                                // удаление данных о поставке их БД
+                                if(isChange) DeleteConsigment(consigmentDB.Id);
                             }
                         }
                     }

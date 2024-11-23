@@ -17,7 +17,7 @@ namespace AppStore.BLL.Strategies
         // все продукты 
         public override List<ShowProduct> ShowAllProducts()
         {
-            return _repositoryAvailability.GetAllProducts(); 
+            return _repositoryAvailability.GetAllProducts(false); 
         }
         // все магазины
         public override List<string> ShowAllStores()
@@ -59,12 +59,25 @@ namespace AppStore.BLL.Strategies
         //  Купить партию товаров 
         public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
-            return 0;
+            return _repositoryAvailability.BuyConsignmentInStore(nameStore, consigment, true);
         }
         // найти магазин, в которым паратия товаров самая дешевая 
         public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
         {
-            return "";
+            var stores = _repositoryStore.ShowAllStores();
+            int minPrice = -1, priceCurrentStore;
+            string storeResult = "";
+            foreach (var store in stores)
+            {
+                priceCurrentStore = _repositoryAvailability.BuyConsignmentInStore(store, consigment, false);
+                if ((minPrice == -1 && priceCurrentStore != 0) || (priceCurrentStore < minPrice && priceCurrentStore!=0))
+                {
+                    minPrice = priceCurrentStore;
+                    storeResult = store;
+                }
+            }
+            if (minPrice <= 0) return "";
+            return storeResult;
         }
     }
 }

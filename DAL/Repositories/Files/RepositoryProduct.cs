@@ -1,4 +1,6 @@
 ﻿using AppStore.DAL.Interfaces;
+using AppStore.DAL.Repositories.Database;
+using AppStore.Models;
 using AppStore.Models.Files;
 using CsvHelper;
 using Microsoft.Data.Sqlite;
@@ -56,30 +58,13 @@ namespace AppStore.DAL.Repositories.Files
             return firstValue;
         }
 
-        public new async Task<int> GetProductByName(string product)
-        {
-            Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-            using var command = new SqliteCommand(@$"
-                select Id from Product where Name=@product", connection);
-            command.Parameters.AddWithValue("@product", product);
-            int idProduct = 0;
-            using (var reader = await command.ExecuteReaderAsync())
-            {
-                if (await reader.ReadAsync())
-                {
-                    idProduct = Convert.ToInt32(reader.GetValue(0));
-                }
-            }
-            return idProduct;
-        }
-
         public new List<string> ShowUniqProducts()
         {
-            var products = _repositoryAvailability.GetListProducts();
+            var products = _repositoryAvailability.GetListProducts(true);
             var uniqProduct = products.Select(product => product.Name).Distinct().ToList();
             return uniqProduct;
         }
+
+
     }
 }

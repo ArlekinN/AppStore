@@ -15,6 +15,6 @@ namespace AppStore.DAL.Interfaces
         public List<string> SearchStoreCheapestProduct() { return new List<string>(); }
 
         public List<ProductAmount> SearchProductOnTheSum() { return new List<ProductAmount>(); }
-        public int BuyConsignmentInStore(int idStore, List<Consigment> consigments) { return 0; }
+        public int BuyConsignmentInStore() { return 0; }
     }
 }
