@@ -108,7 +108,6 @@ namespace AppStore.WinForms
             }
             if (consigments.Count != 0 && !isError && !string.IsNullOrEmpty(comboBoxStore.Text))
             {
-                Console.WriteLine("Покупка");
                 AvailabilityService availabilityService = new AvailabilityService();
                 int commonPrice = availabilityService.BuyConsignmentInStore(comboBoxStore.Text, consigments);
                 if (commonPrice == 0)

@@ -74,7 +74,20 @@ namespace AppStore.BLL.Strategies
         // найти магазин, в которым паратия товаров самая дешевая 
         public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
         {
-            return "";
+            var stores = _repositoryStore.ShowAllStores().Result;
+            int minPrice = -1, priceCurrentStore;
+            string storeResult = "";
+            foreach (var store in stores)
+            {
+                priceCurrentStore = BuyConsignmentInStore(store, consigment);
+                if (minPrice == -1 || priceCurrentStore < minPrice)
+                {
+                    minPrice = priceCurrentStore;
+                    storeResult = store;
+                }
+            }
+            if (minPrice == 0) return "";
+            return storeResult;
         }
     }
 }
