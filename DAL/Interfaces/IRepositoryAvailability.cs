@@ -15,5 +15,6 @@ namespace AppStore.DAL.Interfaces
         public abstract Task<List<string>> SearchStoreCheapestProduct(int idProduct);
 
         public abstract Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum);
+        public abstract Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments);
     }
 }

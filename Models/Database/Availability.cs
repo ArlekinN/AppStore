@@ -8,6 +8,7 @@ namespace AppStore.Models.Database
 {
     internal class Availability
     {
+        public int Id { get; set; }
         public int IdStore { get; set; }
         public int IdProduct { get; set; }
         public int Price { get; set; }

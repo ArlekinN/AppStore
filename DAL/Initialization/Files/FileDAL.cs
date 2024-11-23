@@ -35,18 +35,18 @@ namespace AppStore.DAL.Initialization.Files
         };
             var products = new List<Product>
         {
-            new Product("Milk", 1, 115, 30),
-            new Product("Oil", 1, 110, 40),
-            new Product("Jogurt", 1, 56, 112),
-            new Product("Milk", 2, 120, 40),
-            new Product("Bread", 2, 32, 210),
-            new Product("Eggs", 2, 12, 400),
-            new Product("Jogurt", 2, 70, 30),
-            new Product("Jogurt", 3, 67, 80),
-            new Product("Bread", 3, 30, 90),
-            new Product("Milk", 3, 90, 50),
-            new Product("Eggs", 3, 9, 300),
-            new Product("Oil", 3, 135, 70)
+            new Product(1, "Milk", 1, 115, 30),
+            new Product(2, "Oil", 1, 110, 40),
+            new Product(3, "Jogurt", 1, 56, 112),
+            new Product(4, "Milk", 2, 120, 40),
+            new Product(5, "Bread", 2, 32, 210),
+            new Product(6, "Eggs", 2, 12, 400),
+            new Product(7, "Jogurt", 2, 70, 30),
+            new Product(8, "Jogurt", 3, 67, 80),
+            new Product(9, "Bread", 3, 30, 90),
+            new Product(10, "Milk", 3, 90, 50),
+            new Product(11, "Eggs", 3, 9, 300),
+            new Product(12, "Oil", 3, 135, 70)
         };
             // запись магазинов
             using var writerStore = new StreamWriter(storesFile, true);

@@ -17,6 +17,7 @@ namespace AppStore.WinForms
     {
         private MainForm _mainForm;
         private int textBoxCount = 1;
+        private bool isError = false;
         public DeliverGoodsToTheStoreForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -98,6 +99,7 @@ namespace AppStore.WinForms
 
         private void ButtonCreateConsigment_Click(object sender, EventArgs e)
         {
+            isError = false;
             List<Consigment> consigments = new List<Consigment>();
             string product, price, amount;
             var productFields = this.Controls.OfType<ComboBox>()
@@ -111,6 +113,14 @@ namespace AppStore.WinForms
             var amountFields = this.Controls.OfType<TextBox>()
                 .Where(tb => tb.Name.StartsWith("textBoxAmount"))
                 .OrderBy(tb => tb.Name);
+            var errorFields = this.Controls.OfType<Label>()
+                .Where(tb => tb.Name.StartsWith("labelErrorType"))
+                .OrderBy(tb => tb.Name);
+            for (int i = 0; i < errorFields.Count(); i++)
+            {
+                var label = this.Controls.Find($"labelErrorType{i + 1}", true).FirstOrDefault() as Label;
+                label.Visible = false;
+            }
             for (int i = 0; i < productFields.Count(); i++)
             {
                 try
@@ -132,18 +142,23 @@ namespace AppStore.WinForms
                         var label = this.Controls.Find($"labelErrorType{i+1}", true).FirstOrDefault() as Label;
                         label.Text = "Пустое значение";
                         label.Visible = true;
+                        isError = true;
                     }
                 }
                 catch
                 {
                     var label = this.Controls.Find($"labelErrorType{i+1}", true).FirstOrDefault() as Label;
+                    label.Text = "Ошибка типа данных";
                     label.Visible = true;
+                    isError = true;
                 }
             }
-            AvailabilityService availabilityService = new AvailabilityService();
-            bool isCreat = availabilityService.DeliverGoodsToTheStore(comboBoxStores.Text, consigments);
-            if (isCreat) labelResultCreating.Visible = true;
-
+            if (consigments.Count != 0 && !isError && !string.IsNullOrEmpty(comboBoxStores.Text))
+            {
+                AvailabilityService availabilityService = new AvailabilityService();
+                bool isCreat = availabilityService.DeliverGoodsToTheStore(comboBoxStores.Text, consigments);
+                if (isCreat) labelResultCreating.Visible = true;
+            }
         }
     }
 }

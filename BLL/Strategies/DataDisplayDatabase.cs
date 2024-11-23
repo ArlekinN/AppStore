@@ -68,7 +68,8 @@ namespace AppStore.BLL.Strategies
         //  Купить партию товаров 
         public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
         {
-            return 0;
+            int idStore = _repositoryStore.GetStoreByName(nameStore).Result;
+            return _repositoryAvailability.BuyConsignmentInStore(idStore, consigment).Result;
         }
         // найти магазин, в которым паратия товаров самая дешевая 
         public override string SearchStoreCheapestConsigment(List<Consigment> consigment)

@@ -33,7 +33,7 @@
             textBoxPrice1 = new TextBox();
             textBoxAmount1 = new TextBox();
             buttonCreateConsigment = new Button();
-            labelErrorType = new Label();
+            labelErrorType1 = new Label();
             labelResultCreating = new Label();
             comboBoxProduct1 = new ComboBox();
             SuspendLayout();
@@ -135,16 +135,16 @@
             buttonCreateConsigment.UseVisualStyleBackColor = true;
             buttonCreateConsigment.Click += ButtonCreateConsigment_Click;
             // 
-            // labelErrorType
+            // labelErrorType1
             // 
-            labelErrorType.AutoSize = true;
-            labelErrorType.ForeColor = Color.Red;
-            labelErrorType.Location = new Point(506, 156);
-            labelErrorType.Name = "labelErrorType";
-            labelErrorType.Size = new Size(157, 20);
-            labelErrorType.TabIndex = 13;
-            labelErrorType.Text = "Ошибка типа данных";
-            labelErrorType.Visible = false;
+            labelErrorType1.AutoSize = true;
+            labelErrorType1.ForeColor = Color.Red;
+            labelErrorType1.Location = new Point(506, 156);
+            labelErrorType1.Name = "labelErrorType1";
+            labelErrorType1.Size = new Size(157, 20);
+            labelErrorType1.TabIndex = 13;
+            labelErrorType1.Text = "Ошибка типа данных";
+            labelErrorType1.Visible = false;
             // 
             // labelResultCreating
             // 
@@ -171,7 +171,7 @@
             ClientSize = new Size(675, 500);
             Controls.Add(comboBoxProduct1);
             Controls.Add(labelResultCreating);
-            Controls.Add(labelErrorType);
+            Controls.Add(labelErrorType1);
             Controls.Add(buttonCreateConsigment);
             Controls.Add(textBoxAmount1);
             Controls.Add(textBoxPrice1);
@@ -200,7 +200,7 @@
         private TextBox textBoxPrice1;
         private TextBox textBoxAmount1;
         private Button buttonCreateConsigment;
-        private Label labelErrorType;
+        private Label labelErrorType1;
         private Label labelResultCreating;
         private ComboBox comboBoxProduct1;
     }

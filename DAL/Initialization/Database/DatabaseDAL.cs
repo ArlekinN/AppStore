@@ -35,6 +35,7 @@ namespace AppStore.DAL.Initialization.Database
             Address VARCHAR(50) NOT NULL);
 
             CREATE TABLE IF NOT EXISTS  AVAILABILITY(
+            Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             IdStore INTEGER NOT NULL,
             IdProduct INTEGER NOT NULL,
             Price INTEGER NOT NULL,
@@ -67,20 +68,20 @@ namespace AppStore.DAL.Initialization.Database
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
-            INSERT INTO AVAILABILITY(IdStore, IdProduct, Price, Amount)
+            INSERT INTO AVAILABILITY(Id, IdStore, IdProduct, Price, Amount)
             VALUES
-                (1, 1, 115, 30 ),
-                (1, 3, 110, 40 ),
-                (1, 5, 56, 112 ),
-                (2, 1, 120, 40 ),
-                (2, 2, 32, 210 ),
-                (2, 4, 12, 400 ),
-                (2, 5, 70, 30 ),
-                (3, 5, 67, 80 ),
-                (3, 2, 30, 90 ),
-                (3, 1, 90, 50 ),
-                (3, 4, 9, 300 ),
-                (3, 3, 135, 70 )";
+                (1, 1, 1, 115, 30 ),
+                (2, 1, 3, 110, 40 ),
+                (3, 1, 5, 56, 112 ),
+                (4, 2, 1, 120, 40 ),
+                (5, 2, 2, 32, 210 ),
+                (6, 2, 4, 12, 400 ),
+                (7, 2, 5, 70, 30 ),
+                (8, 3, 5, 67, 80 ),
+                (9, 3, 2, 30, 90 ),
+                (10, 3, 1, 90, 50 ),
+                (11, 3, 4, 9, 300 ),
+                (12, 3, 3, 135, 70 )";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }
