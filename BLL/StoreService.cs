@@ -29,7 +29,6 @@ namespace AppStore.BLL
         }
         public List<string> AllStores()
         {
-            Console.WriteLine("service");
             return DataDisplay.ShowAllStores();
         }
 

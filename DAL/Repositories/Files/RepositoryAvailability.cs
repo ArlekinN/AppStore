@@ -103,10 +103,26 @@ namespace AppStore.DAL.Repositories.Files
             return new List<string>() { cheapestProduct.Store, cheapestProduct.Price.ToString() };
         }
 
-        public new List<ProductAmount> SearchProductOnTheSum(int idStore, int sum)
+        public new List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
-            
-            return new List<ProductAmount>();
+            var products = GetAllProducts();
+            products = products.Where(product => product.Store.Equals(nameStore)).ToList();
+            var result = new List<ProductAmount>();
+            int amountProduct;
+            foreach (var product in products) 
+            {
+                amountProduct = sum / product.Price;
+                if (amountProduct > 0)
+                {
+                    if(amountProduct > product.Amount)
+                    {
+                        amountProduct = product.Amount;
+                    }
+                    var productAmount = new ProductAmount { Product = product.Product, Amount = amountProduct };
+                    result.Add(productAmount);
+                }
+            }
+            return result;
         }
         public new int BuyConsignmentInStore(int idStore, List<Consigment> consigments)
         {

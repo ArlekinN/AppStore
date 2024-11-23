@@ -54,8 +54,7 @@ namespace AppStore.BLL.Strategies
         // найти товары, которые можно купить на сумму sum
         public override List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
-            List<ProductAmount> products = new List<ProductAmount>();
-            return products;
+            return _repositoryAvailability.SearchProductOnTheSum(nameStore, sum);
         }
         //  Купить партию товаров 
         public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
