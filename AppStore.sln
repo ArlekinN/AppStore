@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppStore", "AppStore.csproj", "{7897A29B-E2D7-480F-A519-E2EDCC0D383B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppStore.DAL", "AppStore.DAL\AppStore.DAL.csproj", "{D81A0B1C-C084-4B9E-BF08-C2AC016DDD36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppStore.BLL", "AppStore.BLL\AppStore.BLL.csproj", "{2F22DF99-F696-46E6-AE30-84A04CA54845}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppStore.API", "AppStore.API\AppStore.API.csproj", "{1DDBD10D-14AD-46F3-867D-FF705F131A7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{7897A29B-E2D7-480F-A519-E2EDCC0D383B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7897A29B-E2D7-480F-A519-E2EDCC0D383B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7897A29B-E2D7-480F-A519-E2EDCC0D383B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81A0B1C-C084-4B9E-BF08-C2AC016DDD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81A0B1C-C084-4B9E-BF08-C2AC016DDD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81A0B1C-C084-4B9E-BF08-C2AC016DDD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81A0B1C-C084-4B9E-BF08-C2AC016DDD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F22DF99-F696-46E6-AE30-84A04CA54845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F22DF99-F696-46E6-AE30-84A04CA54845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F22DF99-F696-46E6-AE30-84A04CA54845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F22DF99-F696-46E6-AE30-84A04CA54845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DDBD10D-14AD-46F3-867D-FF705F131A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDBD10D-14AD-46F3-867D-FF705F131A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDBD10D-14AD-46F3-867D-FF705F131A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDBD10D-14AD-46F3-867D-FF705F131A7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

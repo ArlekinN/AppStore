@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppStore.BLL\AppStore.BLL.csproj" />
+    <ProjectReference Include="..\AppStore.DAL\AppStore.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="BuyConsigmentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateStoreForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DeliverGoodsToTheStoreForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ListProductsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SearchStoreCheapestConsigmentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SearchStoreCheapestProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SetofProductOnTheSumForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
