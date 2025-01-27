@@ -1,6 +1,7 @@
 ﻿using AppStore.BLL.Strategies;
 using AppStore.DAL.Configuration;
 using AppStore.DAL.Models;
+using Serilog;
 
 namespace AppStore.BLL
 {
@@ -21,36 +22,38 @@ namespace AppStore.BLL
 
         public List<ShowProduct> ShowAllProducts()
         {
+            Log.Information("AvailabilityService: ShowAllProducts");
             return DataDisplay.ShowAllProducts();
         }
 
-        public bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
+        public bool DeliverGoodsToTheStore(string nameStore, List<Consignment> consignments)
         {
-            return DataDisplay.DeliverGoodsToTheStore(nameStore, consigments);
+            Log.Information("AvailabilityService: Deliver Goods To The Store");
+            return DataDisplay.DeliverGoodsToTheStore(nameStore, consignments);
         }
 
         public List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
+            Log.Information("AvailabilityService: Search Product On The Sum");
             return DataDisplay.SearchProductOnTheSum(nameStore, sum);
         }
 
-        public int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
+        public int BuyConsignmentInStore(string nameStore, List<Consignment> consignment)
         {
-            return DataDisplay.BuyConsignmentInStore(nameStore, consigment);
+            Log.Information("AvailabilityService: Buy Consignment In Store");
+            return DataDisplay.BuyConsignmentInStore(nameStore, consignment);
         }
 
         public List<string> SearchStoreCheapestProduct(string nameProduct)
         {
+            Log.Information("AvailabilityService: Search Store Cheapest Product");
             return DataDisplay.SearchStoreCheapestProduct(nameProduct);
         }
 
-        public string SearchStoreCheapestConsigment(List<Consigment> consigment)
+        public string SearchStoreCheapestConsignment(List<Consignment> consignment)
         {
-            return DataDisplay.SearchStoreCheapestConsigment(consigment);
+            Log.Information("AvailabilityService: Search Store Cheapest Consignment");
+            return DataDisplay.SearchStoreCheapestConsignment(consignment);
         }
-
-
-
-
     }
 }

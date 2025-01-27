@@ -80,5 +80,4 @@ namespace AppStore.DAL.Initialization.Database
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }
-
 }

@@ -30,6 +30,7 @@
             labelGetStore = new Label();
             labelPrice = new Label();
             labelGetPrice = new Label();
+            labelErrorType = new Label();
             SuspendLayout();
             // 
             // buttonBack
@@ -111,9 +112,21 @@
             labelGetPrice.Text = "label5";
             labelGetPrice.Visible = false;
             // 
+            // labelErrorType
+            // 
+            labelErrorType.AutoSize = true;
+            labelErrorType.BackColor = SystemColors.Control;
+            labelErrorType.ForeColor = Color.Red;
+            labelErrorType.Location = new Point(239, 100);
+            labelErrorType.Name = "labelErrorType";
+            labelErrorType.Size = new Size(0, 20);
+            labelErrorType.TabIndex = 8;
+            labelErrorType.Visible = false;
+            // 
             // SearchStoreCheapestProductForm
             // 
             ClientSize = new Size(547, 500);
+            Controls.Add(labelErrorType);
             Controls.Add(labelGetPrice);
             Controls.Add(labelPrice);
             Controls.Add(labelGetStore);
@@ -136,5 +149,6 @@
         private Label labelGetStore;
         private Label labelPrice;
         private Label labelGetPrice;
+        private Label labelErrorType;
     }
 }

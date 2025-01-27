@@ -1,6 +1,6 @@
 ﻿namespace AppStore.API.WinForms
 {
-    partial class SetofProductOnTheSumForm
+    partial class SetOfProductOnTheSumForm
     {
         /// <summary>
         /// Required designer variable.
@@ -130,7 +130,7 @@
             labelListEmpty.Text = "Нет результатов";
             labelListEmpty.Visible = false;
             // 
-            // SetofProductOnTheSumForm
+            // SetOfProductOnTheSumForm
             // 
             ClientSize = new Size(547, 500);
             Controls.Add(labelListEmpty);
@@ -143,7 +143,7 @@
             Controls.Add(comboBoxStore);
             Controls.Add(labelStore);
             Controls.Add(buttonBack);
-            Name = "SetofProductOnTheSumForm";
+            Name = "SetOfProductOnTheSumForm";
             Text = "Найти набор продуктов на сумму";
             ((System.ComponentModel.ISupportInitialize)dataGridViewProducts).EndInit();
             ResumeLayout(false);

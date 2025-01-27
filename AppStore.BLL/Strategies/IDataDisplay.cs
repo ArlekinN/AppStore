@@ -2,31 +2,36 @@
 
 namespace AppStore.BLL.Strategies
 {
-    internal abstract class  IDataDisplay
+    internal interface IDataDisplay
     {
         // все продукты
-        public abstract List<ShowProduct> ShowAllProducts();
+        List<ShowProduct> ShowAllProducts();
 
         // все магазины
-        public abstract List<string> ShowAllStores();
+        List<string> ShowAllStores();
 
         // список продуктов
-        public abstract List<string> ShowUniqProducts();
+        List<string> ShowUniqueProducts();
 
         // создать магазин
-        public abstract bool CreateStore(string name, string address);
+        bool CreateStore(string name, string address);
+        
         // создать продукт
-        public abstract bool CreateProduct(string name);
+        bool CreateProduct(string name);
+        
         // завести партию товаров в магазин
-        public abstract bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments);
+        bool DeliverGoodsToTheStore(string nameStore, List<Consignment> consignments);
 
         // найти магазин магазин с самым дешевым товаром
-        public abstract List<string> SearchStoreCheapestProduct(string nameProduct);
+        List<string> SearchStoreCheapestProduct(string nameProduct);
+        
         // найти товары, которые можно купить на сумму sum
-        public abstract List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum);
+        List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum);
+        
         //  Купить партию товаров 
-        public abstract int BuyConsignmentInStore(string nameStore, List<Consigment> consigment);
-        // найти магазин, в которым паратия товаров самая дешевая 
-        public abstract string SearchStoreCheapestConsigment(List<Consigment> consigment);
+        int BuyConsignmentInStore(string nameStore, List<Consignment> consignment);
+        
+        // найти магазин, в которым партия товаров самая дешевая 
+        string SearchStoreCheapestConsignment(List<Consignment> consignment);
     }
 }

@@ -1,0 +1,9 @@
+{
+  "EmptyFiledError": "Пустое поле",
+  "DataTypeError": "Ошибка типа данных",
+  "UnselectedStoreError": "Необходимо выбрать магазин",
+  "PurchaseError": "Невозможно совершить такую покупку",
+  "SumPurchase": "Общая сумма:",
+  "Successfully": "Успешно",
+  "LackConsignmentError": "Нет такой партии"
+}

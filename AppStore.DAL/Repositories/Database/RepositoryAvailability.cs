@@ -2,36 +2,38 @@
 using AppStore.DAL.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
+using Serilog;
 
 namespace AppStore.DAL.Repositories.Database
 {
     public class RepositoryAvailability: IRepositoryAvailability
     {
-        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
-        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
+        private RepositoryStore RepositoryStore { get; } = RepositoryStore.GetInstance();
+        private RepositoryProduct RepositoryProduct { get; } = RepositoryProduct.GetInstance();
         private static RepositoryAvailability Instance { get; set; }
 
-        private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
-        private RepositoryAvailability() { }
+        private static string ConnectionString { get; } = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
+
         public static RepositoryAvailability GetInstance()
         {
-            if(Instance == null)
-            {
-                Instance = new RepositoryAvailability();
-            }
+            Instance ??= new RepositoryAvailability();
             return Instance;
         }
-        public new async Task<List<ShowProduct>> GetAllProducts()
+
+        public async Task<List<ShowProduct>> GetAllProducts()
         {
+            Log.Information("Database RepositoryAvailability: Get All Products");
             var products = new List<ShowProduct>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select s.Name as Store, p.Name as Product, Price, Amount from AVAILABILITY as a
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"select s.Name as Store, p.Name as Product, Price, Amount from AVAILABILITY as a
                 join STORE as s on s.Id=a.IdStore
-                join PRODUCT as p on p.Id=IdProduct";
-
+                join PRODUCT as p on p.Id=IdProduct"
+            };
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -46,48 +48,56 @@ namespace AppStore.DAL.Repositories.Database
                     products.Add(product);
                 }
             }
-            
             return products;
         }
 
-        public new async Task<bool> DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
+        public async Task<bool> DeliverGoodsToTheStore(int idStore, List<Consignment> consignments)
         {
+            Log.Information("DataBase RepositoryAvailability: Deliver Goods To The Store");
             var products = new List<ShowProduct>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             int idProduct;
-            foreach (Consigment consigment in consigments)
+            foreach (Consignment consignment in consignments)
             {
-
-                idProduct = await _repositoryProduct.GetProductByName(consigment.Product);
-                using var command = new SqliteCommand(@"
+                idProduct = await RepositoryProduct.GetProductByName(consignment.Product);
+                var command = new SqliteCommand()
+                {
+                    Connection = connection,
+                    CommandText = @"
                 INSERT INTO Availability(idStore, idProduct, Price, Amount)
-                VALUES(@idStore, @idProduct, @Price, @Amount)", connection);
+                VALUES(@idStore, @idProduct, @Price, @Amount)"
+                };
                 command.Parameters.AddWithValue("@idStore", idStore);
                 command.Parameters.AddWithValue("@idProduct", idProduct);
-                command.Parameters.AddWithValue("@Price", consigment.Price);
-                command.Parameters.AddWithValue("@Amount", consigment.Amount);
+                command.Parameters.AddWithValue("@Price", consignment.Price);
+                command.Parameters.AddWithValue("@Amount", consignment.Amount);
                 await command.ExecuteNonQueryAsync();
             }
             return true;
         }
-        public new async Task<List<string>> SearchStoreCheapestProduct(int idProduct)
+        public async Task<List<string>> SearchStoreCheapestProduct(int idProduct)
         {
+            Log.Information("DataBase RepositoryAvailability: Search Store Cheapest Product");
             Batteries.Init();
             var result = new List<string>();
-            int idStore; 
-            using var connection = new SqliteConnection(_connectionString);
+            var idStore = int.MinValue; 
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand( @"select IdStore, min(price) as price from AVAILABILITY WHERE
-                idProduct = @idProduct", connection);
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"select IdStore, min(price) as price from AVAILABILITY WHERE
+                idProduct = @idProduct"
+            };
             command.Parameters.AddWithValue("@idProduct", idProduct);
             using (var reader = await command.ExecuteReaderAsync())
             {
                 if (await reader.ReadAsync())
                 {
                     idStore = Convert.ToInt32(reader["idStore"]);
-                    result.Add(_repositoryStore.GetStoreById(idStore).Result);
+                    result.Add(RepositoryStore.GetStoreById(idStore).Result);
                     result.Add(reader["price"].ToString());
                 }
             }
@@ -98,21 +108,28 @@ namespace AppStore.DAL.Repositories.Database
         {
             int amount = sum/price;
             if (amount > amountCommon) return amountCommon;
-            else return amount;
-            
+            else return amount; 
         }
-        public new async Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum)
+
+        public async Task<List<ProductAmount>> SearchProductOnTheSum(int idStore, int sum)
         {
+            Log.Information("DataBase RepositoryAvailability: Search Product On The Sum");
             var products = new List<ProductAmount>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
                     select p.Name as Product, Price, Amount from AVAILABILITY as a
                     JOIN PRODUCT as p on p.Id=a.IdProduct
-                    where IdStore =  @idStore", connection);
+                    where IdStore =  @idStore"
+            };
             command.Parameters.AddWithValue("@idStore", idStore);
-            int price, amountCommon, amount;
+            var price = int.MinValue;
+            var amountCommon = int.MinValue;
+            var amount = int.MinValue;
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -133,90 +150,97 @@ namespace AppStore.DAL.Repositories.Database
             }
             return products;
         }
-        public new async Task<int> BuyConsignmentInStore(int idStore, List<Consigment> consigments, bool isChange)
+
+        public async Task<int> BuyConsignmentInStore(int idStore, List<Consignment> consignments, bool isChange)
         {
-            int totalPrice = 0;
-            bool isExistProduct = true;
-            var consigmentsDB = new List<Consigment>();
+            Log.Information("DataBase RepositoryAvailability: Buy Consignment In Store");
+            var totalPrice = 0;
+            var isExistProduct = true;
+            var consignmentsDB = new List<Consignment>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
                     select a.Id, p.Name as Product, Price, Amount from AVAILABILITY as a
                     JOIN PRODUCT as p on p.Id=a.IdProduct
-                    where IdStore =  @idStore", connection);
+                    where IdStore =  @idStore"
+            };
             command.Parameters.AddWithValue("@idStore", idStore);
             // получение всех поставок с данного магазина
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
                 {
-                    var consigment = new Consigment
+                    var consignment = new Consignment
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         Product = reader["Product"].ToString(),
                         Price = Convert.ToInt32(reader["Price"]),
                         Amount = Convert.ToInt32(reader["Amount"])
                     };
-                    consigmentsDB.Add(consigment);
+                    consignmentsDB.Add(consignment);
                 }
             }
             // текущее количество товара данной поставки, которое надо найти
-            int currentAmountConsigment = 0;
-            int newAmount, commonAmount=0; // сколько такого товара есть в магазине
+            var currentAmountConsignment = 0;
+            var newAmount = int.MinValue; 
+            var commonAmount = 0; // сколько такого товара есть в магазине
             // проверка на то, что в магазине есть нужное количество товаров
-            foreach (var consigment in consigments)
+            foreach (var consignment in consignments)
             {
-                currentAmountConsigment = consigment.Amount;
+                currentAmountConsignment = consignment.Amount;
                 commonAmount = 0;
-                foreach (var consigmentDB in consigmentsDB)
+                foreach (var consignmentDB in consignmentsDB)
                 {
 
-                    if (commonAmount >= currentAmountConsigment)
+                    if (commonAmount >= currentAmountConsignment)
                     {
                         break;
                     }
-                    if (consigment.Product == consigmentDB.Product)
+                    if (consignment.Product == consignmentDB.Product)
                     {
-                        commonAmount += consigmentDB.Amount;
+                        commonAmount += consignmentDB.Amount;
                     }
                 }
             }
-            if (commonAmount < currentAmountConsigment)
+            if (commonAmount < currentAmountConsignment)
             {
                 isExistProduct = false;
             }
             else {
-                foreach (var consigment in consigments)
+                foreach (var consignment in consignments)
                 {
-                    currentAmountConsigment = consigment.Amount;
+                    currentAmountConsignment = consignment.Amount;
 
-                    foreach (var consigmentDB in consigmentsDB)
+                    foreach (var consignmentDB in consignmentsDB)
                     {
                         // если необходимо количество товара найдено
-                        if (currentAmountConsigment == 0)
+                        if (currentAmountConsignment == 0)
                         {
                             break;
                         }
                         // в поставке найден нужный товар
-                        if (consigment.Product == consigmentDB.Product)
+                        if (consignment.Product == consignmentDB.Product)
                         {
                             // если в данной поставке товара больше чем необходимо
-                            if (consigmentDB.Amount > currentAmountConsigment)
+                            if (consignmentDB.Amount > currentAmountConsignment)
                             {
-                                totalPrice += currentAmountConsigment * consigmentDB.Price;
-                                newAmount = consigmentDB.Amount - currentAmountConsigment;
+                                totalPrice += currentAmountConsignment * consignmentDB.Price;
+                                newAmount = consignmentDB.Amount - currentAmountConsignment;
                                 // обновление данных о поставке
-                                if(isChange)UpdateConsigment(consigmentDB.Id, newAmount);
-                                currentAmountConsigment = 0;
+                                if(isChange)UpdateConsignment(consignmentDB.Id, newAmount);
+                                currentAmountConsignment = 0;
                                 break;
                             }
                             else // если в поставке товара меньше
                             {
-                                totalPrice += consigmentDB.Amount * consigmentDB.Price;
-                                currentAmountConsigment -= consigmentDB.Amount;
+                                totalPrice += consignmentDB.Amount * consignmentDB.Price;
+                                currentAmountConsignment -= consignmentDB.Amount;
                                 // удаление данных о поставке их БД
-                                if(isChange) DeleteConsigment(consigmentDB.Id);
+                                if(isChange) DeleteConsignment(consignmentDB.Id);
                             }
                         }
                     }
@@ -224,30 +248,39 @@ namespace AppStore.DAL.Repositories.Database
             }
             if (isExistProduct) return totalPrice;
             else return 0;
-
         }
 
-        private async void DeleteConsigment(int id)
+        private async void DeleteConsignment(int id)
         {
+            Log.Information("DataBase RepositoryAvailability: Delete Consignment");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
                     DELETE FROM AVAILABILITY WHERE
-                    Id = @id", connection);
+                    Id = @id"
+            };
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
 
-        private async void UpdateConsigment(int id, int newAmount)
+        private async void UpdateConsignment(int id, int newAmount)
         {
+            Log.Information("DataBase RepositoryAvailability: Update Consignment");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
                     UPDATE AVAILABILITY 
                     SET Amount = @newAmount
-                    WHERE Id=@id", connection);
+                    WHERE Id=@id"
+            };
             command.Parameters.AddWithValue("@newAmount", newAmount);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();

@@ -27,9 +27,9 @@
             buttonCreateProduct = new Button();
             buttonDeliverGoodsToTheStore = new Button();
             buttonSearchStoreCheapestProduct = new Button();
-            buttonSetofProductOnTheSum = new Button();
+            buttonSetOfProductOnTheSum = new Button();
             buttonBuyConsignment = new Button();
-            buttonSearchCheapestConsigment = new Button();
+            buttonSearchCheapestConsignment = new Button();
             SuspendLayout();
             // 
             // label1
@@ -91,15 +91,15 @@
             buttonSearchStoreCheapestProduct.UseVisualStyleBackColor = true;
             buttonSearchStoreCheapestProduct.Click += SearchStoreCheapestProduct_Click;
             // 
-            // buttonSetofProductOnTheSum
+            // buttonSetOfProductOnTheSum
             // 
-            buttonSetofProductOnTheSum.Location = new Point(20, 293);
-            buttonSetofProductOnTheSum.Name = "buttonSetofProductOnTheSum";
-            buttonSetofProductOnTheSum.Size = new Size(277, 29);
-            buttonSetofProductOnTheSum.TabIndex = 6;
-            buttonSetofProductOnTheSum.Text = "Набор товаров на сумму";
-            buttonSetofProductOnTheSum.UseVisualStyleBackColor = true;
-            buttonSetofProductOnTheSum.Click += SetofProductOnTheSum_Click;
+            buttonSetOfProductOnTheSum.Location = new Point(20, 293);
+            buttonSetOfProductOnTheSum.Name = "buttonSetOfProductOnTheSum";
+            buttonSetOfProductOnTheSum.Size = new Size(277, 29);
+            buttonSetOfProductOnTheSum.TabIndex = 6;
+            buttonSetOfProductOnTheSum.Text = "Набор товаров на сумму";
+            buttonSetOfProductOnTheSum.UseVisualStyleBackColor = true;
+            buttonSetOfProductOnTheSum.Click += SetOfProductOnTheSum_Click;
             // 
             // buttonBuyConsignment
             // 
@@ -111,22 +111,22 @@
             buttonBuyConsignment.UseVisualStyleBackColor = true;
             buttonBuyConsignment.Click += BuyConsignment_Click;
             // 
-            // buttonSearchCheapestConsigment
+            // buttonSearchCheapestConsignment
             // 
-            buttonSearchCheapestConsigment.Location = new Point(21, 391);
-            buttonSearchCheapestConsigment.Name = "buttonSearchCheapestConsigment";
-            buttonSearchCheapestConsigment.Size = new Size(277, 29);
-            buttonSearchCheapestConsigment.TabIndex = 8;
-            buttonSearchCheapestConsigment.Text = "Дешевая партия товаров";
-            buttonSearchCheapestConsigment.UseVisualStyleBackColor = true;
-            buttonSearchCheapestConsigment.Click += SearchCheapestConsigment_Click;
+            buttonSearchCheapestConsignment.Location = new Point(21, 391);
+            buttonSearchCheapestConsignment.Name = "buttonSearchCheapestConsignment";
+            buttonSearchCheapestConsignment.Size = new Size(277, 29);
+            buttonSearchCheapestConsignment.TabIndex = 8;
+            buttonSearchCheapestConsignment.Text = "Дешевая партия товаров";
+            buttonSearchCheapestConsignment.UseVisualStyleBackColor = true;
+            buttonSearchCheapestConsignment.Click += SearchCheapestConsignment_Click;
             // 
             // MainForm
             // 
             ClientSize = new Size(547, 500);
-            Controls.Add(buttonSearchCheapestConsigment);
+            Controls.Add(buttonSearchCheapestConsignment);
             Controls.Add(buttonBuyConsignment);
-            Controls.Add(buttonSetofProductOnTheSum);
+            Controls.Add(buttonSetOfProductOnTheSum);
             Controls.Add(buttonSearchStoreCheapestProduct);
             Controls.Add(buttonDeliverGoodsToTheStore);
             Controls.Add(buttonCreateProduct);
@@ -145,8 +145,8 @@
         private Button buttonCreateProduct;
         private Button buttonDeliverGoodsToTheStore;
         private Button buttonSearchStoreCheapestProduct;
-        private Button buttonSetofProductOnTheSum;
+        private Button buttonSetOfProductOnTheSum;
         private Button buttonBuyConsignment;
-        private Button buttonSearchCheapestConsigment;
+        private Button buttonSearchCheapestConsignment;
     }
 }

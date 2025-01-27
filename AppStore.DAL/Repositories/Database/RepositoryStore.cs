@@ -1,6 +1,7 @@
 ﻿using AppStore.DAL.Interfaces;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
+using Serilog;
 
 namespace AppStore.DAL.Repositories.Database
 {
@@ -8,40 +9,47 @@ namespace AppStore.DAL.Repositories.Database
     {
         private static RepositoryStore Instance { get; set; }
 
-        private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
-        private RepositoryStore() { }
+        private static string ConnectionString { get; } = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
         public static RepositoryStore GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new RepositoryStore();
-            }
+            Instance ??= new RepositoryStore();
             return Instance;
         }
 
-        public new async Task<bool> CreateStore(string nameStore, string address)
+        public async Task<bool> CreateStore(string nameStore, string address)
         {
+            Log.Information("DataBase RepositoryStore: Create Store");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@$"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @$"
                 INSERT INTO STORE(Name, Address)
                 VALUES
-                (@nameStore, @address)", connection);
+                (@nameStore, @address)"
+            };
             command.Parameters.AddWithValue("@nameStore", nameStore);
             command.Parameters.AddWithValue("@address", address);
             await command.ExecuteNonQueryAsync();
             return true;
         }
 
-        public new async Task<int> GetStoreByName(string store)
+        public async Task<int> GetIdStoreByName(string store)
         {
+            Log.Information("DataBase RepositoryStore: Get Id Store By Name");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand("select Id from Store where Name=@store", connection);
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
+                select Id from Store where Name=@store"
+            };
             command.Parameters.AddWithValue("@store", store);
-            int idStore=0;
+            var idStore = 0;
             using (var reader = await command.ExecuteReaderAsync())
             {
                 if (await reader.ReadAsync())
@@ -52,14 +60,18 @@ namespace AppStore.DAL.Repositories.Database
             return idStore;
         }
 
-        public new async Task<List<string>> ShowAllStores()
+        public async Task<List<string>> ShowAllStores()
         {
+            Log.Information("DataBase RepositoryStore: Show All Stores");
             var stores = new List<string>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select Name from Store";
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = "select Name from Store"
+            };
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -71,14 +83,19 @@ namespace AppStore.DAL.Repositories.Database
             return stores;
         }
 
-        public new async Task<string> GetStoreById(int idStore)
+        public async Task<string> GetStoreById(int idStore)
         {
+            Log.Information("DataBase RepositoryStore: Get Store By Id");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand("select Name from Store where Id=@idStore", connection);
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = "select Name from Store where Id=@idStore"
+            };
             command.Parameters.AddWithValue("@idStore", idStore);
-            string store = "";
+            var store = string.Empty;
             using (var reader = await command.ExecuteReaderAsync())
             {
                 if (await reader.ReadAsync())

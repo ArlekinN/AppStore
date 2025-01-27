@@ -1,6 +1,6 @@
 ﻿namespace AppStore.API.WinForms
 {
-    partial class BuyConsigmentForm
+    partial class BuyConsignmentForm
     {
         /// <summary>
         /// Required designer variable.
@@ -24,8 +24,8 @@
         {
             buttonBack = new Button();
             labelStore = new Label();
-            comboBoxStore = new ComboBox();
-            labelConsigment = new Label();
+            comboBoxStores = new ComboBox();
+            labelConsignment = new Label();
             labelProduct = new Label();
             labelAmount = new Label();
             comboBoxProduct1 = new ComboBox();
@@ -58,20 +58,20 @@
             // 
             // comboBoxStore
             // 
-            comboBoxStore.FormattingEnabled = true;
-            comboBoxStore.Location = new Point(128, 23);
-            comboBoxStore.Name = "comboBoxStore";
-            comboBoxStore.Size = new Size(151, 28);
-            comboBoxStore.TabIndex = 2;
+            comboBoxStores.FormattingEnabled = true;
+            comboBoxStores.Location = new Point(128, 23);
+            comboBoxStores.Name = "comboBoxStores";
+            comboBoxStores.Size = new Size(151, 28);
+            comboBoxStores.TabIndex = 2;
             // 
-            // labelConsigment
+            // labelConsignment
             // 
-            labelConsigment.AutoSize = true;
-            labelConsigment.Location = new Point(23, 65);
-            labelConsigment.Name = "labelConsigment";
-            labelConsigment.Size = new Size(121, 20);
-            labelConsigment.TabIndex = 3;
-            labelConsigment.Text = "Партия товаров";
+            labelConsignment.AutoSize = true;
+            labelConsignment.Location = new Point(23, 65);
+            labelConsignment.Name = "labelConsignment";
+            labelConsignment.Size = new Size(121, 20);
+            labelConsignment.TabIndex = 3;
+            labelConsignment.Text = "Партия товаров";
             // 
             // labelProduct
             // 
@@ -157,7 +157,7 @@
             labelErrorType1.Text = "label1";
             labelErrorType1.Visible = false;
             // 
-            // BuyConsigmentForm
+            // BuyConsignmentForm
             // 
             ClientSize = new Size(637, 500);
             Controls.Add(labelErrorType1);
@@ -169,11 +169,11 @@
             Controls.Add(comboBoxProduct1);
             Controls.Add(labelAmount);
             Controls.Add(labelProduct);
-            Controls.Add(labelConsigment);
-            Controls.Add(comboBoxStore);
+            Controls.Add(labelConsignment);
+            Controls.Add(comboBoxStores);
             Controls.Add(labelStore);
             Controls.Add(buttonBack);
-            Name = "BuyConsigmentForm";
+            Name = "BuyConsignmentForm";
             Text = "Покупка партии товаров";
             ResumeLayout(false);
             PerformLayout();
@@ -181,8 +181,8 @@
 
         private Button buttonBack;
         private Label labelStore;
-        private ComboBox comboBoxStore;
-        private Label labelConsigment;
+        private ComboBox comboBoxStores;
+        private Label labelConsignment;
         private Label labelProduct;
         private Label labelAmount;
         private ComboBox comboBoxProduct1;

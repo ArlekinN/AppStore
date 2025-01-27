@@ -1,7 +1,6 @@
 ﻿using AppStore.DAL.Models;
 using CsvHelper;
 using System.Globalization;
-using AppStore.DAL.Models;
 
 namespace AppStore.DAL.Initialization.Files
 {
@@ -20,6 +19,7 @@ namespace AppStore.DAL.Initialization.Files
                 Seed();
             }
         }
+
         private static void Seed()
         {
             var stores = new List<Store>
@@ -66,8 +66,6 @@ namespace AppStore.DAL.Initialization.Files
                 csvWriterProduct.WriteField(product.Amount);
                 csvWriterProduct.NextRecord();
             }
-
         }
     }
-
 }

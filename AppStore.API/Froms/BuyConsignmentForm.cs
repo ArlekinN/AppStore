@@ -1,46 +1,54 @@
 ﻿using AppStore.BLL;
 using AppStore.DAL.Models;
 using System.Data;
+using Serilog;
+using AppStore.API.Managers.Models;
+using AppStore.API.Managers;
 
 namespace AppStore.API.WinForms
 {
-    public partial class BuyConsigmentForm : Form
+    public partial class BuyConsignmentForm : Form
     {
-        private MainForm _mainForm;
-        private int textBoxCount = 1;
-        private bool isError = false;
-        public BuyConsigmentForm(MainForm mainForm)
+        private readonly MainForm _mainForm;
+        private int _textBoxCount = 1;
+        private bool _isError = false;
+        private MessagesForms MessagesForms {  get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
+        public BuyConsignmentForm(MainForm mainForm)
         {
+            Log.Information("Open Buy Consignment Form");
             InitializeComponent();
             LoadDataStore();
             LoadDataProduct("1");
-            _mainForm = mainForm;
+           _mainForm = mainForm;
         }
 
         private void Back_Click(object sender, EventArgs e)
         {
+            Log.Information("Click button :: Back");
             _mainForm.Show();
             this.Close();
         }
 
         private void LoadDataStore()
         {
-            comboBoxStore.Items.Clear();
-            StoreService storeService = new StoreService();
-            List<string> stores = storeService.AllStores();
+            Log.Debug("Load list stores");
+            comboBoxStores.Items.Clear();
+            var storeService = new StoreService();
+            var stores = storeService.AllStores();
             foreach (string store in stores)
             {
-                comboBoxStore.Items.Add(store);
+                comboBoxStores.Items.Add(store);
             }
         }
 
         private void LoadDataProduct(string i)
         {
-            string nameComboBoxProduct = $"comboBoxProduct{i}";
-            var comboBox = this.Controls.Find($"comboBoxProduct{i}", true).FirstOrDefault() as ComboBox;
+            Log.Debug("Load list products");
+            var nameComboBoxProduct = $"comboBoxProduct{i}";
+            var comboBox = this.Controls.Find(nameComboBoxProduct, true).FirstOrDefault() as ComboBox;
             comboBox.Items.Clear();
-            ProductService productService = new ProductService();
-            List<string> products = productService.ShowUniqProducts();
+            var productService = new ProductService();
+            var products = productService.ShowUniqueProducts();
             foreach (string product in products)
             {
                 comboBox.Items.Add(product);
@@ -49,11 +57,13 @@ namespace AppStore.API.WinForms
 
         private void ButtonBuy_Click(object sender, EventArgs e)
         {
-            isError = false;
+            Log.Information("Click button :: Buy");
+            _isError = false;
             labelResult.Visible = false;
             labelSum.Visible = false;
-            List<Consigment> consigments = new List<Consigment>();
-            string product, amount;
+            var consignments = new List<Consignment>();
+            var product = string.Empty;
+            var amount = string.Empty;
             var productFields = this.Controls.OfType<ComboBox>()
                 .Where(tb => tb.Name.StartsWith("comboBoxProduct"))
                 .OrderBy(tb => tb.Name);
@@ -80,7 +90,7 @@ namespace AppStore.API.WinForms
                     amount = amountFields.ElementAt(i).Text;
                     if (!string.IsNullOrEmpty(product) && !string.IsNullOrEmpty(amount))
                     {
-                        consigments.Add(new Consigment
+                        consignments.Add(new Consignment
                         {
                             Product = product,
                             Price = 0,
@@ -90,32 +100,43 @@ namespace AppStore.API.WinForms
                     else
                     {
                         var label = this.Controls.Find($"labelErrorType{i + 1}", true).FirstOrDefault() as Label;
-                        label.Text = "Пустое значение";
+                        label.Text = MessagesForms.EmptyFiledError;
                         label.Visible = true;
-                        isError = true;
+                        _isError = true;
+                        Log.Error("Empty \"product\" or \"amount\" field value");
                     }
                 }
                 catch
                 {
                     var label = this.Controls.Find($"labelErrorType{i + 1}", true).FirstOrDefault() as Label;
-                    label.Text = "Ошибка типа данных";
+                    label.Text = MessagesForms.DataTypeError;
                     label.Visible = true;
-                    isError = true;
+                    _isError = true;
+                    Log.Error("Invalid data type in the quantity field");
                 }
             }
-            if (consigments.Count != 0 && !isError && !string.IsNullOrEmpty(comboBoxStore.Text))
+            if (string.IsNullOrEmpty(comboBoxStores.Text))
             {
-                AvailabilityService availabilityService = new AvailabilityService();
-                int commonPrice = availabilityService.BuyConsignmentInStore(comboBoxStore.Text, consigments);
+                labelResult.Text = MessagesForms.UnselectedStoreError;
+                labelResult.Visible = true;
+                labelResult.ForeColor = Color.Red;
+                _isError = true;
+                Log.Error("Store not selected from the list");
+            }
+            if (consignments.Count != 0 && !_isError)
+            {
+                var availabilityService = new AvailabilityService();
+                var commonPrice = availabilityService.BuyConsignmentInStore(comboBoxStores.Text, consignments);
                 if (commonPrice == 0)
                 {
-                    labelResult.Text = "Невозможно совершить такую покупку";
+                    labelResult.Text = MessagesForms.PurchaseError;
                     labelResult.ForeColor = Color.Red;
                     labelResult.Visible = true;
+                    Log.Error("It is impossible to make such a purchase");
                 }
                 else
                 {
-                    labelResult.Text = "Общая сумма:";
+                    labelResult.Text = MessagesForms.SumPurchase;
                     labelResult.Visible = true;
                     labelResult.ForeColor = Color.Black;
                     labelSum.Text = commonPrice.ToString();
@@ -128,28 +149,29 @@ namespace AppStore.API.WinForms
 
         private void ButtonAddField_Click(object sender, EventArgs e)
         {
-            textBoxCount += 1;
-            ComboBox comboBox1 = new ComboBox
+            Log.Information("Click button :: Add Field");
+            _textBoxCount += 1;
+            var comboBox1 = new ComboBox
             {
-                Name = $"comboBoxProduct{textBoxCount}",
-                Location = new System.Drawing.Point(23, 156 + (textBoxCount - 1) * 37),
+                Name = $"comboBoxProduct{_textBoxCount}",
+                Location = new System.Drawing.Point(23, 156 + (_textBoxCount - 1) * 37),
                 Size = new Size(151, 27)
             };
             this.Controls.Add(comboBox1);
-            LoadDataProduct(textBoxCount.ToString());
+            LoadDataProduct(_textBoxCount.ToString());
 
-            TextBox textBox2 = new TextBox
+            var textBox2 = new TextBox
             {
-                Name = $"textBoxAmount{textBoxCount}",
-                Location = new System.Drawing.Point(229, 156 + (textBoxCount - 1) * 37),
+                Name = $"textBoxAmount{_textBoxCount}",
+                Location = new System.Drawing.Point(229, 156 + (_textBoxCount - 1) * 37),
                 Size = new Size(125, 27)
             };
-            Label labelError = new Label
+            var labelError = new Label
             {
-                Name = $"labelErrorType{textBoxCount}",
-                Location = new System.Drawing.Point(403, 156 + (textBoxCount - 1) * 37),
+                Name = $"labelErrorType{_textBoxCount}",
+                Location = new System.Drawing.Point(403, 156 + (_textBoxCount - 1) * 37),
                 ForeColor = Color.Red,
-                Text = "Ошибка типа данных",
+                Text = MessagesForms.DataTypeError,
                 Size = new Size(157, 20)
             };
             labelError.Visible = false;

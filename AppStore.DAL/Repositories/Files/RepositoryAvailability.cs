@@ -2,30 +2,26 @@
 using AppStore.DAL.Models;
 using CsvHelper;
 using System.Globalization;
+using Serilog;
 
 namespace AppStore.DAL.Repositories.Files
 {
     public class RepositoryAvailability : IRepositoryAvailability
     {
-        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
-        private static string productsFile = Path.Combine(AppContext.BaseDirectory, "products.csv");
+        private static RepositoryStore RepositoryStore { get; } = RepositoryStore.GetInstance();
+        private static string ProductsFile { get; } = Path.Combine(AppContext.BaseDirectory, "products.csv");
         private static RepositoryAvailability Instance { get; set; }
-        private RepositoryAvailability() 
-        {
-            FileInfo fileProduct = new FileInfo(productsFile);
-        }
+
         public static RepositoryAvailability GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new RepositoryAvailability();
-            }
+            Instance ??= new RepositoryAvailability();
             return Instance;
         }
 
         public List<Product> GetListProducts(bool isAllProduct)
         {
-            string[] lines = File.ReadAllLines(productsFile);
+            Log.Information("Files RepositoryAvailability: Get List Products");
+            var lines = File.ReadAllLines(ProductsFile);
             string[] valuesLine;
             var products = new List<Product>();
             foreach (var line in lines)
@@ -48,10 +44,11 @@ namespace AppStore.DAL.Repositories.Files
             }
             return products;
         }
-        public new List<ShowProduct> GetAllProducts(bool isAllProduct)
+        public List<ShowProduct> GetAllProducts(bool isAllProduct)
         {
+            Log.Information("Files RepositoryAvailability: Get All Products");
             var products = GetListProducts(isAllProduct);
-            var stores = _repositoryStore.GetListStores();
+            var stores = RepositoryStore.GetListStores();
             var showProducts = products.Select(p => new ShowProduct
             {
                 Product = p.Name,
@@ -62,14 +59,15 @@ namespace AppStore.DAL.Repositories.Files
             return showProducts;
         }
 
-        public new bool DeliverGoodsToTheStore(int idStore, List<Consigment> consigments)
+        public bool DeliverGoodsToTheStore(int idStore, List<Consignment> consignments)
         {
-            int countId = GetLastId();
-            using var writerStore = new StreamWriter(productsFile, true);
-            using var csvWriterStore = new CsvWriter(writerStore, CultureInfo.CurrentCulture);
-            foreach (var consigment in consigments)
+            Log.Information("Files RepositoryAvailability: Deliver Goods To The Store");
+            var countId = GetLastId();
+            var writerStore = new StreamWriter(ProductsFile, true);
+            var csvWriterStore = new CsvWriter(writerStore, CultureInfo.CurrentCulture);
+            foreach (var consignment in consignments)
             {
-                var product = new Product(countId, consigment.Product, idStore, consigment.Price, consigment.Amount);
+                var product = new Product(countId, consignment.Product, idStore, consignment.Price, consignment.Amount);
                 csvWriterStore.WriteField(product.Id);
                 csvWriterStore.WriteField(product.Name);
                 csvWriterStore.WriteField(product.IdStore);
@@ -83,26 +81,29 @@ namespace AppStore.DAL.Repositories.Files
         }
         public int GetLastId()
         {
-            string[] lines = File.ReadAllLines(productsFile);
-            string lastLine = lines[lines.Length - 1];
-            string[] valuesLine = lastLine.Split(';');
-            int firstValue = Convert.ToInt32(valuesLine[0]) + 1;
+            Log.Information("Files RepositoryAvailability: Get Last Id");
+            var lines = File.ReadAllLines(ProductsFile);
+            var lastLine = lines[lines.Length - 1];
+            var valuesLine = lastLine.Split(';');
+            var firstValue = Convert.ToInt32(valuesLine[0]) + 1;
             return firstValue;
         }
-        public new List<string> SearchStoreCheapestProduct(string nameProduct)
+        public List<string> SearchStoreCheapestProduct(string nameProduct)
         {
+            Log.Information("Files RepositoryAvailability: Search Store Cheapest Product");
             var products = GetAllProducts(false);
             var productsFilterProduct = products.Where(product => product.Product.Equals(nameProduct)).ToList();
             var cheapestProduct = productsFilterProduct.OrderBy(product => product.Price).FirstOrDefault();
-            return new List<string>() { cheapestProduct.Store, cheapestProduct.Price.ToString() };
+            return [cheapestProduct.Store, cheapestProduct.Price.ToString()];
         }
 
-        public new List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
+        public List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
+            Log.Information("Files RepositoryAvailability: Search Product On The Sum");
             var products = GetAllProducts(false);
             products = products.Where(product => product.Store.Equals(nameStore)).ToList();
             var result = new List<ProductAmount>();
-            int amountProduct;
+            var amountProduct = int.MinValue;
             foreach (var product in products) 
             {
                 amountProduct = sum / product.Price;
@@ -118,63 +119,65 @@ namespace AppStore.DAL.Repositories.Files
             }
             return result;
         }
-        public new int BuyConsignmentInStore(string nameStore, List<Consigment> consigments, bool isChange)
+        public int BuyConsignmentInStore(string nameStore, List<Consignment> consignments, bool isChange)
         {
+            Log.Information("Files RepositoryAvailability: Buy Consignment In Store");
             var products = GetListProducts(false);
-            products = products.Where(product => _repositoryStore.GetStoreById(product.IdStore).Equals(nameStore)).ToList();
-            int totalPrice = 0, currentAmountConsigment = 0; // текущее количество товара данной поставки, которое надо найти
-            int newAmount;
-            int commonAmount = 0;// сколько такого товара есть в магазине
-            bool isExistProduct = true;
+            products = products.Where(product => RepositoryStore.GetStoreById(product.IdStore).Equals(nameStore)).ToList();
+            var totalPrice = 0;
+            var currentAmountConsignment = 0; // текущее количество товара данной поставки, которое надо найти
+            var newAmount = int.MinValue;
+            var commonAmount = 0;// сколько такого товара есть в магазине
+            var isExistProduct = true;
             // проверка, что такие товары вообще есть в магазине  в нужном количестве
-            foreach(var consigment in consigments)
+            foreach(var consignment in consignments)
             {
-                currentAmountConsigment = consigment.Amount;
+                currentAmountConsignment = consignment.Amount;
                 commonAmount = 0;
                 foreach (var product in products)
                 {
 
-                    if (commonAmount >= currentAmountConsigment)
+                    if (commonAmount >= currentAmountConsignment)
                     {
                         break;
                     }
-                    if (consigment.Product == product.Name)
+                    if (consignment.Product == product.Name)
                     {
                         commonAmount += product.Amount;
                     }
                 }
             }
-            if (commonAmount < currentAmountConsigment)
+            if (commonAmount < currentAmountConsignment)
             {
                 isExistProduct = false;
             }
             else
             {
-                foreach (var consigment in consigments)
+                foreach (var consignment in consignments)
                 {
-                    currentAmountConsigment = consigment.Amount;
+                    currentAmountConsignment = consignment.Amount;
                     foreach (var product in products)
                     {
                         // если необходимо количество товара найдено
-                        if (currentAmountConsigment == 0)
+                        if (currentAmountConsignment == 0)
                         {
                             break;
                         }
-                        if (consigment.Product == product.Name)
+                        if (consignment.Product == product.Name)
                         {
                             // если в данной поставке товара больше чем необходимо
-                            if (product.Amount > currentAmountConsigment)
+                            if (product.Amount > currentAmountConsignment)
                             {
-                                totalPrice += currentAmountConsigment * product.Price;
-                                newAmount = product.Amount - currentAmountConsigment;
+                                totalPrice += currentAmountConsignment * product.Price;
+                                newAmount = product.Amount - currentAmountConsignment;
                                 if (isChange) UpdateDataFile(product.Id, newAmount);
-                                currentAmountConsigment = 0;
+                                currentAmountConsignment = 0;
                                 break;
                             }
                             else // если в поставке товара меньше
                             {
                                 totalPrice += product.Amount * product.Price;
-                                currentAmountConsigment -= product.Amount;
+                                currentAmountConsignment -= product.Amount;
                                 if(isChange) UpdateDataFile(product.Id, 0);
                             }
                         }
@@ -188,7 +191,8 @@ namespace AppStore.DAL.Repositories.Files
 
         private void UpdateDataFile(int idProduct, int newAmount) 
         {
-            var lines = File.ReadAllLines(productsFile).ToList();
+            Log.Information("Files RepositoryAvailability: Update Data File");
+            var lines = File.ReadAllLines(ProductsFile).ToList();
             for (int i = 0; i < lines.Count; i++)
             {
                 if (lines[i].StartsWith(idProduct.ToString()))
@@ -199,12 +203,13 @@ namespace AppStore.DAL.Repositories.Files
                     break;
                 }
             }
-            File.WriteAllLines(productsFile, lines);
+            File.WriteAllLines(ProductsFile, lines);
         }
 
         private Product ConvertToProduct(string lineProduct)
         {
-            string[] values = lineProduct.Split(';');
+            Log.Information("Files RepositoryAvailability: Convert To Product");
+            var values = lineProduct.Split(';');
             return new Product
             {
                 Id = Convert.ToInt32(values[0]),
@@ -213,7 +218,6 @@ namespace AppStore.DAL.Repositories.Files
                 Price = Convert.ToInt32(values[3]),
                 Amount = Convert.ToInt32(values[4])
             };
-
         }
     }
 }

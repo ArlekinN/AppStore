@@ -1,5 +1,6 @@
 ﻿using AppStore.BLL.Strategies;
 using AppStore.DAL.Configuration;
+using Serilog;
 
 namespace AppStore.BLL
 {
@@ -19,15 +20,19 @@ namespace AppStore.BLL
         }
         public bool CreateStore(string name, string address)
         {
+            Log.Information("StoreService: Create Store");
             return DataDisplay.CreateStore(name, address);
         }
+
         public List<string> AllStores()
         {
+            Log.Information("StoreService: All Stores");
             return DataDisplay.ShowAllStores();
         }
 
         public List<string> SearchStoreCheapestProduct(string product)
         {
+            Log.Information("StoreService: Search Store Cheapest Product");
             return DataDisplay.SearchStoreCheapestProduct(product);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using AppStore.DAL.Interfaces;
 using Microsoft.Data.Sqlite;
+using Serilog;
 using SQLitePCL;
 
 namespace AppStore.DAL.Repositories.Database
@@ -8,37 +9,41 @@ namespace AppStore.DAL.Repositories.Database
     {
         private static RepositoryProduct Instance { get; set; }
 
-        private readonly string _connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
-        private RepositoryProduct() { }
+        private static string ConnectionString { get; } = $"Data Source={Path.Combine(AppContext.BaseDirectory, "StoreDB.db")}";
         public static RepositoryProduct GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new RepositoryProduct();
-            }
+            Instance ??= new RepositoryProduct();
             return Instance;
         }
-        public new async Task<bool> CreateProduct(string nameProduct)
+        public async Task<bool> CreateProduct(string nameProduct)
         {
+            Log.Information("DataBase RepositoryProduct: Create Product");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"
                 INSERT INTO Product(Name)
-                VALUES(@Name)", connection);
+                VALUES(@Name)"
+            };
             command.Parameters.AddWithValue("@Name", nameProduct);
             await command.ExecuteNonQueryAsync();
             return true;
-            
         }
 
-        public new async Task<int> GetProductByName(string product)
+        public async Task<int> GetProductByName(string product)
         {
+            Log.Information("DataBase RepositoryProduct: Get Product By Name");
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@$"
-                select Id from Product where Name=@product", connection);
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @$"select Id from Product where Name=@product"
+            };
             command.Parameters.AddWithValue("@product", product);
             int idProduct=0;
             using (var reader = await command.ExecuteReaderAsync())
@@ -51,14 +56,18 @@ namespace AppStore.DAL.Repositories.Database
             return idProduct;
         }
 
-        public new async Task<List<string>> ShowUniqProducts()
+        public async Task<List<string>> ShowUniqueProducts()
         {
+            Log.Information("DataBase RepositoryProduct: Show Unique Products");
             var products = new List<string>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select Name from Product";
+            var command = new SqliteCommand()
+            {
+                Connection = connection,
+                CommandText = @"select Name from Product"
+            };
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -66,7 +75,6 @@ namespace AppStore.DAL.Repositories.Database
                     products.Add(reader["Name"].ToString());
                 }
             }
-
             return products;
         }
     }

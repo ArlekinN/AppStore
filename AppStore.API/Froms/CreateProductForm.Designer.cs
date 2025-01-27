@@ -47,7 +47,7 @@
             buttonCreateProduct.TabIndex = 1;
             buttonCreateProduct.Text = "Создать продукт";
             buttonCreateProduct.UseVisualStyleBackColor = true;
-            buttonCreateProduct.Click += buttonCreateProduct_Click;
+            buttonCreateProduct.Click += ButtonCreateProduct_Click;
             // 
             // labelNameProduct
             // 

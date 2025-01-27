@@ -9,7 +9,7 @@ namespace AppStore.DAL.Initialization
     {
         public static void Initialization(IConfiguration config)
         {
-            var dalType = config["DAL:Type"];
+            var dalType = config["DAL_Type"];
             if (dalType == "Database")
             {
                 DatabaseDAL.InitializationDatabase();
@@ -21,6 +21,5 @@ namespace AppStore.DAL.Initialization
                 Config.GetInstance(dalType);
             }
         }
-
     }
 }

@@ -25,16 +25,16 @@
             buttonBack = new Button();
             labelNameStore = new Label();
             comboBoxStores = new ComboBox();
-            labelListConsigment = new Label();
+            labelListConsignment = new Label();
             labelProduct = new Label();
             labelPrice = new Label();
             labelAmount = new Label();
             buttonAddProduct = new Button();
             textBoxPrice1 = new TextBox();
             textBoxAmount1 = new TextBox();
-            buttonCreateConsigment = new Button();
+            buttonCreateConsignment = new Button();
             labelErrorType1 = new Label();
-            labelResultCreating = new Label();
+            labelResult = new Label();
             comboBoxProduct1 = new ComboBox();
             SuspendLayout();
             // 
@@ -65,14 +65,14 @@
             comboBoxStores.Size = new Size(151, 28);
             comboBoxStores.TabIndex = 3;
             // 
-            // labelListConsigment
+            // labelListConsignment
             // 
-            labelListConsigment.AutoSize = true;
-            labelListConsigment.Location = new Point(35, 68);
-            labelListConsigment.Name = "labelListConsigment";
-            labelListConsigment.Size = new Size(73, 20);
-            labelListConsigment.TabIndex = 4;
-            labelListConsigment.Text = "Поставка";
+            labelListConsignment.AutoSize = true;
+            labelListConsignment.Location = new Point(35, 68);
+            labelListConsignment.Name = "labelListConsignment";
+            labelListConsignment.Size = new Size(73, 20);
+            labelListConsignment.TabIndex = 4;
+            labelListConsignment.Text = "Поставка";
             // 
             // labelProduct
             // 
@@ -125,38 +125,38 @@
             textBoxAmount1.Size = new Size(125, 27);
             textBoxAmount1.TabIndex = 11;
             // 
-            // buttonCreateConsigment
+            // buttonCreateConsignment
             // 
-            buttonCreateConsigment.Location = new Point(526, 62);
-            buttonCreateConsigment.Name = "buttonCreateConsigment";
-            buttonCreateConsigment.Size = new Size(122, 50);
-            buttonCreateConsigment.TabIndex = 12;
-            buttonCreateConsigment.Text = "Создать поставку";
-            buttonCreateConsigment.UseVisualStyleBackColor = true;
-            buttonCreateConsigment.Click += ButtonCreateConsigment_Click;
+            buttonCreateConsignment.Location = new Point(526, 62);
+            buttonCreateConsignment.Name = "buttonCreateConsignment";
+            buttonCreateConsignment.Size = new Size(122, 50);
+            buttonCreateConsignment.TabIndex = 12;
+            buttonCreateConsignment.Text = "Создать поставку";
+            buttonCreateConsignment.UseVisualStyleBackColor = true;
+            buttonCreateConsignment.Click += ButtonCreateConsignment_Click;
             // 
             // labelErrorType1
             // 
             labelErrorType1.AutoSize = true;
             labelErrorType1.ForeColor = Color.Red;
-            labelErrorType1.Location = new Point(506, 156);
+            labelErrorType1.Location = new Point(459, 156);
             labelErrorType1.Name = "labelErrorType1";
             labelErrorType1.Size = new Size(157, 20);
             labelErrorType1.TabIndex = 13;
             labelErrorType1.Text = "Ошибка типа данных";
             labelErrorType1.Visible = false;
             // 
-            // labelResultCreating
+            // labelResult
             // 
-            labelResultCreating.AutoSize = true;
-            labelResultCreating.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            labelResultCreating.ForeColor = Color.Lime;
-            labelResultCreating.Location = new Point(392, 25);
-            labelResultCreating.Name = "labelResultCreating";
-            labelResultCreating.Size = new Size(84, 25);
-            labelResultCreating.TabIndex = 14;
-            labelResultCreating.Text = "Успешно";
-            labelResultCreating.Visible = false;
+            labelResult.AutoSize = true;
+            labelResult.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelResult.ForeColor = Color.Lime;
+            labelResult.Location = new Point(168, 64);
+            labelResult.Name = "labelResult";
+            labelResult.Size = new Size(84, 25);
+            labelResult.TabIndex = 14;
+            labelResult.Text = "Успешно";
+            labelResult.Visible = false;
             // 
             // comboBoxProduct1
             // 
@@ -170,16 +170,16 @@
             // 
             ClientSize = new Size(675, 500);
             Controls.Add(comboBoxProduct1);
-            Controls.Add(labelResultCreating);
+            Controls.Add(labelResult);
             Controls.Add(labelErrorType1);
-            Controls.Add(buttonCreateConsigment);
+            Controls.Add(buttonCreateConsignment);
             Controls.Add(textBoxAmount1);
             Controls.Add(textBoxPrice1);
             Controls.Add(buttonAddProduct);
             Controls.Add(labelAmount);
             Controls.Add(labelPrice);
             Controls.Add(labelProduct);
-            Controls.Add(labelListConsigment);
+            Controls.Add(labelListConsignment);
             Controls.Add(comboBoxStores);
             Controls.Add(labelNameStore);
             Controls.Add(buttonBack);
@@ -192,16 +192,16 @@
         private Button buttonBack;
         private Label labelNameStore;
         private ComboBox comboBoxStores;
-        private Label labelListConsigment;
+        private Label labelListConsignment;
         private Label labelProduct;
         private Label labelPrice;
         private Label labelAmount;
         private Button buttonAddProduct;
         private TextBox textBoxPrice1;
         private TextBox textBoxAmount1;
-        private Button buttonCreateConsigment;
+        private Button buttonCreateConsignment;
         private Label labelErrorType1;
-        private Label labelResultCreating;
+        private Label labelResult;
         private ComboBox comboBoxProduct1;
     }
 }

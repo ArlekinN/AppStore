@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppStore.Common\AppStore.Common.csproj" />
     <ProjectReference Include="..\AppStore.DAL\AppStore.DAL.csproj" />
   </ItemGroup>
 

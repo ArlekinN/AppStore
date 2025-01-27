@@ -1,5 +1,6 @@
 ﻿using AppStore.BLL.Strategies;
 using AppStore.DAL.Configuration;
+using Serilog;
 
 namespace AppStore.BLL
 {
@@ -20,12 +21,14 @@ namespace AppStore.BLL
 
         public bool CreateProduct(string name)
         {
+            Log.Information("ProductService: Create Product");
             return DataDisplay.CreateProduct(name);
         }
 
-        public List<string> ShowUniqProducts()
+        public List<string> ShowUniqueProducts()
         {
-            return DataDisplay.ShowUniqProducts();
+            Log.Information("ProductService: Show Unique Products");
+            return DataDisplay.ShowUniqueProducts();
         }
     }
 }

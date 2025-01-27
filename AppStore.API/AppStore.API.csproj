@@ -9,42 +9,51 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AppStore.BLL\AppStore.BLL.csproj" />
+    <ProjectReference Include="..\AppStore.Common\AppStore.Common.csproj" />
     <ProjectReference Include="..\AppStore.DAL\AppStore.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="BuyConsigmentForm.cs">
+    <Compile Update="Froms\BuyConsignmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="CreateProductForm.cs">
+    <Compile Update="Froms\CreateProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="CreateStoreForm.cs">
+    <Compile Update="Froms\CreateStoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="DeliverGoodsToTheStoreForm.cs">
+    <Compile Update="Froms\DeliverGoodsToTheStoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="ListProductsForm.cs">
+    <Compile Update="Froms\ListProductsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="MainForm.cs">
+    <Compile Update="Froms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="SearchStoreCheapestConsigmentForm.cs">
+    <Compile Update="Froms\SearchStoreCheapestConsignmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="SearchStoreCheapestProductForm.cs">
+    <Compile Update="Froms\SearchStoreCheapestProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="SetofProductOnTheSumForm.cs">
+    <Compile Update="Froms\SetOfProductOnTheSumForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Update="JsonFiles\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="JsonFiles\MessagesForms.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

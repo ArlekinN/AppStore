@@ -1,32 +1,39 @@
 ﻿using AppStore.BLL;
 using AppStore.DAL.Models;
 using System.Data;
+using Serilog;
+using AppStore.API.Managers.Models;
+using AppStore.API.Managers;
 
 namespace AppStore.API.WinForms
 {
-    public partial class SearchStoreCheapestConsigmentForm : Form
+    public partial class SearchStoreCheapestConsignmentForm : Form
     {
-        private MainForm _mainForm;
+        private readonly MainForm _mainForm;
         private int textBoxCount = 1;
         private bool isError = false;
-        public SearchStoreCheapestConsigmentForm(MainForm mainForm)
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
+        public SearchStoreCheapestConsignmentForm(MainForm mainForm)
         {
+            Log.Information("Open Search Store Cheapest Consignment Form");
             InitializeComponent();
             LoadDataProduct("1");
             _mainForm = mainForm;
         }
         private void Back_Click(object sender, EventArgs e)
         {
+            Log.Information("Click button :: Back");
             _mainForm.Show();
             this.Close();
         }
         private void LoadDataProduct(string i)
         {
-            string nameComboBoxProduct = $"comboBoxProduct{i}";
-            var comboBox = this.Controls.Find($"comboBoxProduct{i}", true).FirstOrDefault() as ComboBox;
+            Log.Debug("Load list products");
+            var nameComboBoxProduct = $"comboBoxProduct{i}";
+            var comboBox = this.Controls.Find(nameComboBoxProduct, true).FirstOrDefault() as ComboBox;
             comboBox.Items.Clear();
-            ProductService productService = new ProductService();
-            List<string> products = productService.ShowUniqProducts();
+            var productService = new ProductService();
+            var products = productService.ShowUniqueProducts();
             foreach (string product in products)
             {
                 comboBox.Items.Add(product);
@@ -35,8 +42,9 @@ namespace AppStore.API.WinForms
 
         private void ButtonAddField_Click(object sender, EventArgs e)
         {
+            Log.Information("Click button :: Add Field");
             textBoxCount += 1;
-            ComboBox comboBox1 = new ComboBox
+            var comboBox1 = new ComboBox
             {
                 Name = $"comboBoxProduct{textBoxCount}",
                 Location = new System.Drawing.Point(12, 124 + (textBoxCount - 1) * 37),
@@ -45,18 +53,18 @@ namespace AppStore.API.WinForms
             this.Controls.Add(comboBox1);
             LoadDataProduct(textBoxCount.ToString());
 
-            TextBox textBox2 = new TextBox
+            var textBox2 = new TextBox
             {
                 Name = $"textBoxAmount{textBoxCount}",
                 Location = new System.Drawing.Point(216, 124 + (textBoxCount - 1) * 37),
                 Size = new Size(125, 27)
             };
-            Label labelError = new Label
+            var labelError = new Label
             {
                 Name = $"labelErrorType{textBoxCount}",
                 Location = new System.Drawing.Point(403, 124 + (textBoxCount - 1) * 37),
                 ForeColor = Color.Red,
-                Text = "Ошибка типа данных",
+                Text = MessagesForms.DataTypeError,
                 Size = new Size(157, 20)
             };
             labelError.Visible = false;
@@ -66,10 +74,12 @@ namespace AppStore.API.WinForms
 
         private void ButtonSearch_Click(object sender, EventArgs e)
         {
+            Log.Information("Click button :: Search");
             isError = false;
             labelResult.Visible = false;
-            List<Consigment> consigments = new List<Consigment>();
-            string product, amount;
+            var consignments = new List<Consignment>();
+            var product = string.Empty;
+            var amount = string.Empty;
             var productFields = this.Controls.OfType<ComboBox>()
                 .Where(tb => tb.Name.StartsWith("comboBoxProduct"))
                 .OrderBy(tb => tb.Name);
@@ -94,7 +104,7 @@ namespace AppStore.API.WinForms
                     amount = amountFields.ElementAt(i).Text;
                     if (!string.IsNullOrEmpty(product) && !string.IsNullOrEmpty(amount))
                     {
-                        consigments.Add(new Consigment
+                        consignments.Add(new Consignment
                         {
                             Product = product,
                             Price = 0,
@@ -104,26 +114,28 @@ namespace AppStore.API.WinForms
                     else
                     {
                         var label = this.Controls.Find($"labelErrorType{i + 1}", true).FirstOrDefault() as Label;
-                        label.Text = "Пустое значение";
+                        label.Text = MessagesForms.EmptyFiledError;
                         label.Visible = true;
                         isError = true;
+                        Log.Error("Empty \"product\" or \"amount\" field value");
                     }
                 }
                 catch
                 {
                     var label = this.Controls.Find($"labelErrorType{i + 1}", true).FirstOrDefault() as Label;
-                    label.Text = "Ошибка типа данных";
+                    label.Text = MessagesForms.DataTypeError;
                     label.Visible = true;
                     isError = true;
+                    Log.Error("Invalid data type in the quantity field");
                 }
             }
-            if (consigments.Count != 0 && !isError)
+            if (consignments.Count != 0 && !isError)
             {
-                AvailabilityService availabilityService = new AvailabilityService();
-                string store = availabilityService.SearchStoreCheapestConsigment(consigments);
+                var availabilityService = new AvailabilityService();
+                var store = availabilityService.SearchStoreCheapestConsignment(consignments);
                 if (string.IsNullOrEmpty(store))
                 {
-                    labelResult.Text = "Нет такой партии";
+                    labelResult.Text = MessagesForms.LackConsignmentError;
                     labelResult.ForeColor = Color.Red;
                     labelResult.Visible = true;
                 }

@@ -5,74 +5,75 @@ namespace AppStore.BLL.Strategies
 {
     internal class DataDisplayFiles: IDataDisplay
     {
-        private static RepositoryAvailability _repositoryAvailability = RepositoryAvailability.GetInstance();
-        private static RepositoryStore _repositoryStore = RepositoryStore.GetInstance();
-        private static RepositoryProduct _repositoryProduct = RepositoryProduct.GetInstance();
+        private RepositoryAvailability RepositoryAvailability { get;} = RepositoryAvailability.GetInstance();
+        private RepositoryStore RepositoryStore { get; } = RepositoryStore.GetInstance();
+        private RepositoryProduct RepositoryProduct { get; } = RepositoryProduct.GetInstance();
 
         // все продукты 
-        public override List<ShowProduct> ShowAllProducts()
+        public List<ShowProduct> ShowAllProducts()
         {
-            return _repositoryAvailability.GetAllProducts(false); 
+            return RepositoryAvailability.GetAllProducts(false); 
         }
 
         // все магазины
-        public override List<string> ShowAllStores()
+        public List<string> ShowAllStores()
         {
-            return _repositoryStore.ShowAllStores();
+            return RepositoryStore.ShowAllStores();
         }
 
         // список продуктов
-        public override List<string> ShowUniqProducts()
+        public List<string> ShowUniqueProducts()
         {
-            return _repositoryProduct.ShowUniqProducts();
+            return RepositoryProduct.ShowUniqueProducts();
         }
 
         // создать магазин
-        public override bool CreateStore(string name, string address)
+        public bool CreateStore(string name, string address)
         {
-            return _repositoryStore.CreateStore(name, address);
+            return RepositoryStore.CreateStore(name, address);
         }
 
         // создать продукт
-        public override bool CreateProduct(string name)
+        public bool CreateProduct(string name)
         {
-            return _repositoryProduct.CreateProduct(name);
+            return RepositoryProduct.CreateProduct(name);
         }
 
         // завести партию товаров в магазин
-        public override bool DeliverGoodsToTheStore(string nameStore, List<Consigment> consigments)
+        public bool DeliverGoodsToTheStore(string nameStore, List<Consignment> consignments)
         {
-            int idStore = _repositoryStore.GetStoreByName(nameStore);
-            return _repositoryAvailability.DeliverGoodsToTheStore(idStore, consigments);
+            var idStore = RepositoryStore.GetStoreByName(nameStore);
+            return RepositoryAvailability.DeliverGoodsToTheStore(idStore, consignments);
         }
 
         // найти магазин магазин с самым дешевым товаром
-        public override List<string> SearchStoreCheapestProduct(string nameProduct)
+        public List<string> SearchStoreCheapestProduct(string nameProduct)
         {
-            return _repositoryAvailability.SearchStoreCheapestProduct(nameProduct);
+            return RepositoryAvailability.SearchStoreCheapestProduct(nameProduct);
         }
 
         // найти товары, которые можно купить на сумму sum
-        public override List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
+        public List<ProductAmount> SearchProductOnTheSum(string nameStore, int sum)
         {
-            return _repositoryAvailability.SearchProductOnTheSum(nameStore, sum);
+            return RepositoryAvailability.SearchProductOnTheSum(nameStore, sum);
         }
 
         //  Купить партию товаров 
-        public override int BuyConsignmentInStore(string nameStore, List<Consigment> consigment)
+        public int BuyConsignmentInStore(string nameStore, List<Consignment> consignment)
         {
-            return _repositoryAvailability.BuyConsignmentInStore(nameStore, consigment, true);
+            return RepositoryAvailability.BuyConsignmentInStore(nameStore, consignment, true);
         }
 
         // найти магазин, в которым партия товаров самая дешевая 
-        public override string SearchStoreCheapestConsigment(List<Consigment> consigment)
+        public string SearchStoreCheapestConsignment(List<Consignment> consignment)
         {
-            var stores = _repositoryStore.ShowAllStores();
-            int minPrice = -1, priceCurrentStore;
-            string storeResult = "";
+            var stores = RepositoryStore.ShowAllStores();
+            var minPrice = -1;
+            var priceCurrentStore = int.MinValue;
+            var storeResult = string.Empty;
             foreach (var store in stores)
             {
-                priceCurrentStore = _repositoryAvailability.BuyConsignmentInStore(store, consigment, false);
+                priceCurrentStore = RepositoryAvailability.BuyConsignmentInStore(store, consignment, false);
                 if ((minPrice == -1 && priceCurrentStore != 0) || (priceCurrentStore < minPrice && priceCurrentStore!=0))
                 {
                     minPrice = priceCurrentStore;

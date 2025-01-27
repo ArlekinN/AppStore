@@ -2,14 +2,16 @@
 
 namespace AppStore.DAL.Interfaces
 {
-    public abstract class IRepositoryAvailability
+    public interface IRepositoryAvailability
     {
-        public List<ShowProduct> GetAllProducts() { return new List<ShowProduct>(); }
+        List<ShowProduct> GetAllProducts() { return []; }
 
-        public bool DeliverGoodsToTheStore() { return true; }
-        public List<string> SearchStoreCheapestProduct() { return new List<string>(); }
+        bool DeliverGoodsToTheStore() { return false; }
 
-        public List<ProductAmount> SearchProductOnTheSum() { return new List<ProductAmount>(); }
-        public int BuyConsignmentInStore() { return 0; }
+        List<string> SearchStoreCheapestProduct() { return []; }
+
+        List<ProductAmount> SearchProductOnTheSum() { return []; }
+
+        int BuyConsignmentInStore() { return 0; }
     }
 }
